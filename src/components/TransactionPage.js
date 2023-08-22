@@ -1,21 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Dropdown } from "react-bootstrap";
-import "./TransactionPage.css";
-
-
+import axios from "axios"; // Make sure to install axios using `npm install axios`
 
 const TransactionPage = () => {
   const [fromAccountId, setFromAccountId] = useState("");
   const [toAccountId, setToAccountId] = useState("");
   const [amount, setAmount] = useState("");
+  const [accountOptions, setAccountOptions] = useState([]);
   const [transactionDate, setTransactionDate] = useState("");
   const [Instructions, setInstructions] = useState("");
   const [remark, setRemark] = useState("");
   const [typeOfTransaction, setTypeOfTransaction] = useState("");
 
-  const handleSubmit = (e) => {
+
+  useEffect(() => {
+    // Fetch account options from the backend when the component mounts
+    fetchAccountOptions();
+  }, []);
+
+  const fetchAccountOptions = async () => {
+    try {
+      const response = await axios.get("/api/accounts"); // Replace with your endpoint
+      setAccountOptions(response.data); // Assuming the response contains account data
+    } catch (error) {
+      console.error("Error fetching account options:", error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({
+
+    const transactionData = {
       fromAccountId,
       toAccountId,
       amount,
@@ -23,24 +37,47 @@ const TransactionPage = () => {
       Instructions,
       remark,
       typeOfTransaction,
-    });
+    };
+
+    try {
+      const response = await axios.post("/api/transactions/transfer", transactionData);
+      console.log(response.data); // Display response from the backend
+      // Reset the form after successful transfer
+      setFromAccountId("");
+      setToAccountId("");
+      setAmount("");
+      setAccountOptions("");
+      setTransactionDate("");
+      setInstructions("");
+      setRemark("");
+      setTypeOfTransaction("");
+      // ... reset other state variables
+    } catch (error) {
+      console.error("Error transferring money:", error);
+    }
   };
+
+  // ... JSX and form components
 
   return (
     <div className="transaction-page">
-      <h1>Internet Banking</h1>
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>From Account ID</label>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Enter from account ID"
-            value={fromAccountId}
-            onChange={(e) => setFromAccountId(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
+      <div className="form-group">
+        <label>From Account ID</label>
+        <select
+          className="form-control"
+          value={fromAccountId}
+          onChange={(e) => setFromAccountId(e.target.value)}
+        >
+          <option value="">Select an account</option>
+          {accountOptions.map((account) => (
+            <option key={account.id} value={account.id}>
+              {account.accountName} - {account.accountNumber}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="form-group">
           <label>To Account ID</label>
           <input
             type="text"
@@ -101,7 +138,7 @@ const TransactionPage = () => {
             <option value="NEFT">NEFT</option>
           </select>
         </div>
-        <button type="submit">Submit</button>
+      <button type="submit">Submit</button>
       </form>
     </div>
   );

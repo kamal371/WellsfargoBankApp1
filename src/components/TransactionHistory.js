@@ -1,15 +1,61 @@
-import React from 'react';
-import "./TransactionHistory.css";
-const transactions = [
-  { id: 1, date: '2023-08-19',from:'00214214',to:'00313367', description: 'Groceries', amount: '-50.00' },
-  { id: 2, date: '2023-08-20',from:'00928765',to:'00678345', description: 'Salary', amount: '1000.00' },
-  // Add more transactions...
-];
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './TransactionHistory.css';
 
 const TransactionHistory = () => {
+  const [selectedAccountId, setSelectedAccountId] = useState('');
+  const [accountOptions, setAccountOptions] = useState([]);
+  const [transactions, setTransactions] = useState([]);
+
+  useEffect(() => {
+    fetchAccountOptions();
+  }, []);
+
+  useEffect(() => {
+    if (selectedAccountId !== '') {
+      fetchTransactions();
+    }
+  }, [selectedAccountId]);
+
+  const fetchAccountOptions = async () => {
+    try {
+      const response = await axios.get("/api/accounts"); // Replace with your endpoint
+      setAccountOptions(response.data); // Assuming the response contains account data
+    } catch (error) {
+      console.error("Error fetching account options:", error);
+    }
+  };
+
+  const fetchTransactions = async () => {
+    try {
+      const response = await axios.get(`/api/transactions/${selectedAccountId}`); // Replace with your endpoint
+      setTransactions(response.data); // Assuming the response contains transaction data
+    } catch (error) {
+      console.error('Error fetching transactions:', error);
+    }
+  };
+
+  const handleAccountSelect = (accountId) => {
+    setSelectedAccountId(accountId);
+  };
+
   return (
     <div className="transaction-history">
       <h1>Transaction History</h1>
+      <div className="account-dropdown">
+        <label>Select Account:</label>
+        <select
+          value={selectedAccountId}
+          onChange={(e) => handleAccountSelect(e.target.value)}
+        >
+          <option value="">Select an account</option>
+          {accountOptions.map(account => (
+            <option key={account.id} value={account.id}>
+              {account.accountNumber} - {account.accountName}
+            </option>
+          ))}
+        </select>
+      </div>
       <table>
         <thead>
           <tr>
@@ -22,7 +68,10 @@ const TransactionHistory = () => {
         </thead>
         <tbody>
           {transactions.map(transaction => (
-            <tr key={transaction.id}>
+            <tr
+              key={transaction.id}
+              className={transaction.amount.startsWith('-') ? 'debit' : 'credit'}
+            >
               <td>{transaction.date}</td>
               <td>{transaction.from}</td>
               <td>{transaction.to}</td>
