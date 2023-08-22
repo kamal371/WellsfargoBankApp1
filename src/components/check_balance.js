@@ -15,10 +15,11 @@ const ButtonComponent = () => {
   return (
     <div>
       {/* Button with click event */}
-      <button onClick={handleClick}>Check Balance</button>
+      {/* <button onClick={handleClick}>Check Balance</button> */}
       
       {/* Display the value when the button is clicked */}
-      {isButtonClicked && <p>{displayedValue}</p>}
+      {/* {isButtonClicked && <p>{displayedValue}</p>} */}
+     
     </div>
   );
 };

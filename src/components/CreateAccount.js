@@ -45,7 +45,7 @@ function CreateAccount({ userName }) {
     <div className="create-account-container">
       <h2>Create New Account</h2>
       <form onSubmit={handleSubmit}>
-        <div className="input-group">
+        {/* <div className="input-group">
           <label>Account Name</label>
           <input
             type="text"
@@ -53,7 +53,7 @@ function CreateAccount({ userName }) {
             onChange={(e) => setAccountName(e.target.value)}
             required
           />
-        </div>
+        </div> */}
         <div className="input-group">
           <label>Account Type</label>
           <select value={accountType} onChange={(e) => setAccountType(e.target.value)}>

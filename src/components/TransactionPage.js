@@ -19,8 +19,19 @@ const TransactionPage = () => {
 
   const fetchAccountOptions = async () => {
     try {
-      const response = await axios.get("/api/accounts"); // Replace with your endpoint
-      setAccountOptions(response.data); // Assuming the response contains account data
+      var userId=window.sessionStorage.getItem("userId");
+      const response = await axios.get("http://localhost:8080/account/readCustomer/"+userId); // Replace with your endpoint
+      console.log("Kamal's acciynts")
+      console.log(response);
+      var accounts = response.data
+      console.log(accounts.length)
+      var accountids =  [];
+      for(let i=0;i<accounts.length;i++){
+        console.log(response.data[i]);
+        accountids[i] = response.data[i];
+      }
+      console.log(accountids);
+      setAccountOptions(accountids); // Assuming the response contains account data
     } catch (error) {
       console.error("Error fetching account options:", error);
     }
@@ -72,7 +83,7 @@ const TransactionPage = () => {
           <option value="">Select an account</option>
           {accountOptions.map((account) => (
             <option key={account.id} value={account.id}>
-              {account.accountName} - {account.accountNumber}
+              {account.account_id} - {account.accountType}
             </option>
           ))}
         </select>
