@@ -1,0 +1,57 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "john_doe",
+      "email": "john@example.com",
+      "password": "password123"
+    },
+    {
+      "username": "rishi",
+      "email": "rishi102001@gmail.com",
+      "password": "++rishi2001++",
+      "id": 2
+    }
+  ],
+  "accounts": [
+    {
+      "id": "kvvrxe3mwrh9ulo462ze",
+      "username": {},
+      "accountName": "Rishi",
+      "accountType": "checking",
+      "balance": 0
+    },
+    {
+      "id": "ineaa737tnc4fc2fz8sf",
+      "username": {},
+      "accountName": "Rishi",
+      "accountType": "checking",
+      "balance": 0
+    },
+    {
+      "id": "jhsdhqgfywp98tyfqs8dp",
+      "username": {},
+      "accountName": "Rishi",
+      "accountType": "checking",
+      "balance": 800
+    },
+    {
+      "id": "df0a85beeqv7ufx865d2bl",
+      "accountName": "rishi",
+      "accountType": "savings",
+      "balance": 0
+    },
+    {
+      "id": "0r2th6y5tkfd305sp21ffyt",
+      "accountName": "akshansh",
+      "accountType": "checking",
+      "balance": 60
+    },
+    {
+      "id": "0lbb4vmplrfo4ub42i089g",
+      "accountName": "w",
+      "accountType": "savings",
+      "balance": 0
+    }
+  ]
+}
