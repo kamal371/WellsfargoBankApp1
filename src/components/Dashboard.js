@@ -37,10 +37,17 @@ console.log(customerID);
 // Define the Dashboard component
 const Dashboard = () => {
  // var customerID;
- // var data;
+ // account details and balance
+
+ const [amount, setAmount] = useState("");
+ const [accountOptions, setAccountOptions] = useState([]);
+
+
+
   const [user, setUsers] = useState([]);
   useEffect(() => {
     loadUsers();
+   // fetchAccountOptions();
   }, []);
   console.log(user);
   const loadUsers = async () => {
@@ -48,12 +55,13 @@ const Dashboard = () => {
   var token = window.sessionStorage.getItem("token");
   //const config = {headers: {Authorization: 'Bearer ${token}','Access-Control-Allow-Origin':"*"}};
   var userName = window.sessionStorage.getItem("userName");
-  const result = await axios.get("http://localhost:8080/customer/customer/bymail/"+userName);
+  const result = await axios.get("http://localhost:8080/customer/bymail/"+userName);
   console.log(result);
   customerID = result.data.customer_id;
   customer_name = result.data.customer_name;
   email = result.data.email;
   contact = result.data.contact;
+  window.sessionStorage.setItem("userId",customerID);
     //setUsers(result.data);
   };
 
@@ -117,9 +125,6 @@ const Dashboard = () => {
           <div>
             <AccountSelection />
           </div>
-            <div className="check_balance">
-            <CheckBalance/>
-            </div>
         </main>
         
       </div>
