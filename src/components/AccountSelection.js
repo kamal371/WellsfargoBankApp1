@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios"; 
-var balance;
+var balance,index;
 const AccountSelection = () => {
   const [selectedAccount, setSelectedAccount] = useState(''); // Selected account state
 
@@ -23,24 +23,34 @@ const AccountSelection = () => {
             dotat = i;
         }
     }
-    var index = parseInt(selectedAccount.slice(0,dotat));
+    index = parseInt(selectedAccount.slice(0,dotat));
     console.log(index);
     if(isNaN(index)){
         setDisplayedValue("Please select an account");
     } else {
         setDisplayedValue("Current Balance is: Rs."+accountOptions[index].balance);
     }
+    window.sessionStorage.setItem("resp_account_balance",accountOptions[index].balance);
+    var resp_account_balance=window.sessionStorage.getItem("resp_account_balance");
+    console.log("account balance in AccountSelection.js :",resp_account_balance);
   };
 
   const handleAccountChange = (event) => {
     setSelectedAccount(event.target.value);
+    console.log("event.target.value :",event.target.value);
+    console.log("type of event.target.value :",Object.prototype.toString.call(event.target.value));
+    //window.sessionStorage.setItem("customer_account_id",accountOptions[index].account_id);
+    //window.sessionStorage.setItem("resp_account_balance",accountOptions[index].balance);
+    //console.log("account_id :",window.sessionStorage.getItem("customer_balance"));
   };
   const fetchAccountOptions = async () => {
     try {
       var userId=window.sessionStorage.getItem("userId");
+      console.log("user id is: "+userId);
       const response = await axios.get("http://localhost:8080/account/readCustomer/"+userId); // Replace with your endpoint
       console.log("Kamal's acciynts")
-      console.log(response);
+      console.log("response :",response);
+      console.log("response.data :",response.data);
       var accounts = response.data
       console.log(accounts.length)
       var accountids =  [];
@@ -64,12 +74,14 @@ const AccountSelection = () => {
         <select
           className="form-control"
           value={selectedAccount}
-          onChange={(e) => setSelectedAccount(e.target.value)}
+          onChange={handleAccountChange}
         >
           <option value="">Select an account</option>
+
           {accountOptions.map((account,index) => (
             <option key={account.id} value={account.id}>
               {index}. {account.account_id} - {account.accountType} 
+             
             </option>
             
           ))}

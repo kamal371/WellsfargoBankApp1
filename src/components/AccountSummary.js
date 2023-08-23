@@ -25,6 +25,7 @@ const AccountSummary = () => {
     <div className="account-summary">
     <h1>Account Summary</h1>
     <table>
+      
       <tr>
         <th>Account Number</th>
         <td>{accountNumber}</td>
