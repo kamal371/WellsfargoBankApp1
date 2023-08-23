@@ -24,7 +24,6 @@ import dashboard_navbar from './dashboard_navbar';
 //import TransferMoney from './TransferMoney';
 //var dat = window.sessionStorage.getItem("userCredentials");
 var userName = window.sessionStorage.getItem("userName");
-console.log(userName);
 var token = window.sessionStorage.getItem("token");
 //  var data = JSON.parse(dat);
 var customerID,customer_name,email,contact;
@@ -49,9 +48,7 @@ const Dashboard = () => {
     loadUsers();
    // fetchAccountOptions();
   }, []);
-  console.log(user);
   const loadUsers = async () => {
-
   var token = window.sessionStorage.getItem("token");
   console.log("the token: "+token);
   //const config = {headers: {Authorization: 'Bearer ${token}','Access-Control-Allow-Origin':"http://localhost:8080",'Content-Type':'application/json','Access-Control-Allow-Credentials':true}};
@@ -60,7 +57,7 @@ const Dashboard = () => {
   
   const result = await axios.get("http://localhost:8080/customer/bymail/"+userName );
 
-  console.log(result);
+  console.log("dashboard",result);
   customerID = result.data.customer_id;
   customer_name = result.data.customer_name;
   email = result.data.email;

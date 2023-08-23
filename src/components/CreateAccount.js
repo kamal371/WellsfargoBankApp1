@@ -77,6 +77,7 @@ function CreateAccount({ userName }) {
 
   return (
     <div className="create-account-container">
+      
       <h2>Create New Account</h2>
       <form onSubmit={handleSubmit}>
       <div className="input-group">

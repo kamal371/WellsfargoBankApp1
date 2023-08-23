@@ -10,21 +10,18 @@ function AdminDashboard() {
 
   const loadUsers = async () => {
     const result = await axios.get("http://localhost:8080/admin/admin");
-    // console.log(result);
     setUsers(result.data);
+
+    const handleEditClick = (index) => {
+      console.log(`Edit clicked for row ${index}`);
+      // Implement your edit logic here
+    };
+  
+    const handleViewClick = (index) => {
+      console.log(`View clicked for row ${index}`);
+      // Implement your delete logic here
+    };
   };
-/*
-  useEffect(() => {
-    // Fetch user details from your backend API
-    // For example: fetchUserDetails().then(data => setUserDetails(data));
-    const simulatedUserDetails = [
-      { id: 1, username: 'user1', email: 'user1@example.com', balance: 1000 },
-      { id: 2, username: 'user2', email: 'user2@example.com', balance: 2500 },
-      // ... fetch more user details
-    ];
-    setUserDetails(simulatedUserDetails);
-  }, []);
-*/
   return (
     <div className="admin-dashboard-container">
       <h2>Admin Dashboard</h2>
@@ -33,20 +30,23 @@ function AdminDashboard() {
           <tr>
             <th>ID</th>
             <th>Username</th>
-            {/* <th>Password</th> */}
             <th>Email</th>
             <th>Contact</th>
           </tr>
         </thead>
         <tbody>
 
-          {user.map(user => (
-            <tr key={user.customer_id}>
+          {user.map((user,index) => (
+            <tr key={index}>
               <td>{user.customer_id}</td>
               <td>{user.customer_name}</td>
               {/* <td>{user.password}</td> */}
               <td>{user.email}</td>
               <td>{user.contact}</td>
+              <td>
+                <button onClick={() => handleEditClick(index)}>Edit</button>
+                <button onClick={() => handleViewClick(index)}>Delete</button>
+              </td>
             </tr>
           ))}
           

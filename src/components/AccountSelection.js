@@ -14,7 +14,7 @@ const AccountSelection = () => {
    useEffect(() => {
      fetchAccountOptions();
    }, []);
-   const handleClick = () => {
+   const handleClick = async() => {
     // Update state to indicate button was clicked and set the value to display
     setIsButtonClicked(true);
     var dotat = 0;
@@ -28,15 +28,36 @@ const AccountSelection = () => {
     if(isNaN(index)){
         setDisplayedValue("Please select an account");
     } else {
-        setDisplayedValue("Current Balance is: Rs."+accountOptions[index].balance);
+      //window.sessionStorage.setItem("resp_account_balance",accountOptions[index].balance);
+      window.sessionStorage.setItem("account_id",accountOptions[index].account_id);
+      
+      var stored_account_id=window.sessionStorage.getItem("account_id");
+      console.log("stored acct id from window ",stored_account_id);
+      const resulta = await  axios.get("http://localhost:8080/account/read/"+stored_account_id)
+      console.log("resulta response ",resulta.data);
+        setDisplayedValue("Current Balance is: Rs."+resulta.data.balance);
+
     }
-    window.sessionStorage.setItem("resp_account_balance",accountOptions[index].balance);
+
+    var account_id_sent=window.sessionStorage.getItem("account_id");
+    console.log("account ID in AccountSelection.js :",account_id_sent);
+
     var resp_account_balance=window.sessionStorage.getItem("resp_account_balance");
     console.log("account balance in AccountSelection.js :",resp_account_balance);
   };
 
   const handleAccountChange = (event) => {
     setSelectedAccount(event.target.value);
+    console.log("event :",event);
+    console.log("event.target :",event.target);
+    console.log("event.target.value :",event.target.value);
+    window.sessionStorage.setItem("accountDetails",event.target.value);
+
+    // window.sessionStorage.setItem("account_id_for_account_summary",accountOptions[index].account_id);
+      
+    // var account_id_for_account_summary=window.sessionStorage.getItem("account_id_for_account_summary");
+    // console.log("stored acct id from window for account summary",account_id_for_account_summary);
+
     console.log("event.target.value :",event.target.value);
     console.log("type of event.target.value :",Object.prototype.toString.call(event.target.value));
     //window.sessionStorage.setItem("customer_account_id",accountOptions[index].account_id);
@@ -55,7 +76,7 @@ const AccountSelection = () => {
       console.log(accounts.length)
       var accountids =  [];
       for(let i=0;i<accounts.length;i++){
-        console.log(response.data[i]);
+        //console.log(response.data[i]);
         accountids[i] = response.data[i];
       }
       console.log(accountids);
@@ -91,8 +112,6 @@ const AccountSelection = () => {
       <div className="check_balance">
             {/* <CheckBalance/> */}
             <button onClick={handleClick}>Check Balance</button>
-
-           
          {isButtonClicked && <p>{displayedValue}</p>}
         </div>
     </div>
