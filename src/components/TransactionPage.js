@@ -2,15 +2,21 @@ import React, { useState, useEffect } from "react";
 import axios from "axios"; // Make sure to install axios using `npm install axios`
 
 const TransactionPage = () => {
-  const [fromAccountId, setFromAccountId] = useState("");
-  const [toAccountId, setToAccountId] = useState("");
+  const [from_account, setFromAccountId] = useState("");
+  const [to_account, setToAccountId] = useState("");
   const [amount, setAmount] = useState("");
   const [accountOptions, setAccountOptions] = useState([]);
-  const [transactionDate, setTransactionDate] = useState("");
+  const [transactionPassword, setTransactionPassword] = useState("");
   const [Instructions, setInstructions] = useState("");
   const [remark, setRemark] = useState("");
-  const [typeOfTransaction, setTypeOfTransaction] = useState("");
-
+  const [tType, setTypeOfTransaction] = useState("");
+  const [transactionSuccess, setTransactionSuccess] = useState(false);
+  const [transactionFailure, setTransactionFailure] = useState(false);
+  const transactionTypeMap = {
+    IMPS: 2,
+    RTGS: 1,
+    NEFT: 0,
+  };
 
   useEffect(() => {
     // Fetch account options from the backend when the component mounts
@@ -41,32 +47,51 @@ const TransactionPage = () => {
     e.preventDefault();
 
     const transactionData = {
-      fromAccountId,
-      toAccountId,
+      from_account,
+      to_account,
       amount,
-      transactionDate,
-      Instructions,
-      remark,
-      typeOfTransaction,
+      tType:transactionTypeMap[tType],
+      
     };
 
+    
+    
     try {
-      const response = await axios.post("/api/transactions/transfer", transactionData);
-      console.log(response.data); // Display response from the backend
-      // Reset the form after successful transfer
-      setFromAccountId("");
-      setToAccountId("");
-      setAmount("");
-      setAccountOptions("");
-      setTransactionDate("");
-      setInstructions("");
-      setRemark("");
-      setTypeOfTransaction("");
-      // ... reset other state variables
+      console.log(transactionData);
+      const response = await axios.post("http://localhost:8080/customer/transaction", transactionData);
+      
+      if (response.status === 200) {
+        console.log("Transaction successful:", response.data);
+        // Reset the form after successful transfer
+        setFromAccountId("");
+        setToAccountId("");
+        setAmount("");
+        setAccountOptions([]);
+        setTypeOfTransaction("");
+        setInstructions("");
+        setRemark("");
+        setTransactionPassword(""); // Clear the transaction password field
+        setTransactionSuccess(true);
+        setTransactionFailure(false); 
+              // ... reset other state variables
+      } else {
+        console.log("Transaction failed:", response.data); // Assuming response contains error information
+        // You can handle the failed transaction case here
+        setTransactionSuccess(false); // Reset the success state
+        setTransactionFailure(true);
+      }
     } catch (error) {
       console.error("Error transferring money:", error);
+      // Handle the error case here
+      setTransactionSuccess(false); // Reset the success state
+        setTransactionFailure(true);
     }
   };
+  
+  
+  
+  
+  
 
   // ... JSX and form components
 
@@ -77,13 +102,13 @@ const TransactionPage = () => {
         <label>From Account ID</label>
         <select
           className="form-control"
-          value={fromAccountId}
+          value={from_account}
           onChange={(e) => setFromAccountId(e.target.value)}
         >
           <option value="">Select an account</option>
           {accountOptions.map((account) => (
             <option key={account.id} value={account.id}>
-              {account.account_id} - {account.accountType}
+              {account.account_id}
             </option>
           ))}
         </select>
@@ -94,7 +119,7 @@ const TransactionPage = () => {
             type="text"
             className="form-control"
             placeholder="Enter to account ID"
-            value={toAccountId}
+            value={to_account}
             onChange={(e) => setToAccountId(e.target.value)}
           />
         </div>
@@ -108,15 +133,17 @@ const TransactionPage = () => {
             onChange={(e) => setAmount(e.target.value)}
           />
         </div>
-        <div className="form-group">
-          <label>Transaction Date</label>
-          <input
-            type="date"
-            className="form-control"
-            value={transactionDate}
-            onChange={(e) => setTransactionDate(e.target.value)}
-          />
-        </div>
+        {/* <div className="form-group">
+   <label>Transaction Password</label>
+    <input
+    type="password"
+    className="form-control"
+    placeholder="Enter transaction password"
+    value={transactionPassword}
+    onChange={(e) => setTransactionPassword(e.target.value)}
+    />
+    </div> */}
+
         <div className="form-group">
           <label>Instructions</label>
           <input
@@ -141,7 +168,7 @@ const TransactionPage = () => {
           <label>Type of Transaction</label>
           <select
             className="form-control"
-            value={typeOfTransaction}
+            value={tType}
             onChange={(e) => setTypeOfTransaction(e.target.value)}
           >
             <option value="RTGS">RTGS</option>
@@ -151,6 +178,12 @@ const TransactionPage = () => {
         </div>
       <button type="submit">Submit</button>
       </form>
+      {transactionSuccess && (
+        <div className="success-message">Transaction was successful!</div>
+      )}
+      {transactionFailure && (
+        <div className="error-message">Transaction has failed.</div>
+      )}
     </div>
   );
 };
