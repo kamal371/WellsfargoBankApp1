@@ -41,7 +41,7 @@ const TransactionHistory = () => {
 
   const fetchTransactions = async () => {
     try {
-      const response = await axios.get(
+      var response = await axios.get(
         `http://localhost:8080/customer/transaction/` + selected_acc
       );
       console.log("transactions")
@@ -57,9 +57,36 @@ const TransactionHistory = () => {
     setSelectedAccountId(accountId);
   };
 
-  const debits = transactions.debits;
-const credits = transactions.credits;
-const withdrawals = transactions.withdrawals;
+
+let count = 1;
+console.log(count);
+count += 1;
+var debits = transactions.debits;
+try{
+  for(let i=0;i<debits.length;i++){
+    debits[i].amount *= -1;
+  }
+  console.log("Proscuitto: "+debits[0].amount); 
+} catch (err){
+  console.log(err);
+}
+
+ 
+//debits[0].amount *= -1;
+
+var credits = transactions.credits;
+var withdrawals = transactions.withdrawals;
+console.log("Prescuitto: "+typeof(withdrawals));
+try{
+  for(let i=0;i<withdrawals.length();i++){
+    withdrawals.amount *= -1;
+    withdrawals.tType = "Withdraw"
+  }
+} catch(err){
+  console.log("No withdrawals " + err);
+}
+//withdrawals.tType *= -1;
+//withdrawals[0].tType = "Withdrawn";
 
 
   return (
@@ -84,49 +111,42 @@ const withdrawals = transactions.withdrawals;
           <h2>Debits</h2>
           <table>
             {/* Table header */}
+            <thead>
+              <tr>
+                <th>Transaction Time</th>
+                <th>Payer</th>
+                <th>Payee</th>
+                <th>Type</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
             <tbody>
               {debits.map((transaction) => (
                 <tr key={transaction.transaction_id}>
-                  <td>{transaction.transaction_time}</td>
+                  <td>{transaction.transaction_time.slice(8,10)+"/"+transaction.transaction_time.slice(5,7)+"/"+transaction.transaction_time.slice(0,4) +" at "+transaction.transaction_time.slice(11,16)}</td>
+          <td>{transaction.from_account}</td>
+          <td>{transaction.to_account}</td>
+          <td>{transaction.tType}</td>
+          <td>{transaction.amount*-1}</td>
+                </tr>
+              ))}
+              {credits.map((transaction) => (
+                <tr key={transaction.transaction_id}>
+                  <td>{transaction.transaction_time.slice(8,10)+"/"+transaction.transaction_time.slice(5,7)+"/"+transaction.transaction_time.slice(0,4) +" at "+transaction.transaction_time.slice(11,16)}</td>
           <td>{transaction.from_account}</td>
           <td>{transaction.to_account}</td>
           <td>{transaction.tType}</td>
           <td>{transaction.amount}</td>
                 </tr>
               ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="transaction-table">
-          <h2>Credits</h2>
-          <table>
-            {/* Table header */}
-            <tbody>
-              {credits.map((transaction) => (
-                <tr key={transaction.transaction_id}>
-                <td>{transaction.transaction_time}</td>
-        <td>{transaction.from_account}</td>
-        <td>{transaction.to_account}</td>
-        <td>{transaction.tType}</td>
-        <td>{transaction.amount}</td>
-              </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="transaction-table">
-          <h2>Withdrawals</h2>
-          <table>
-            {/* Table header */}
-            <tbody>
               {withdrawals.map((transaction) => (
-               <tr key={transaction.transaction_id}>
-               <td>{transaction.transaction_time}</td>
-       <td>{transaction.from_account}</td>
-       <td>{transaction.to_account}</td>
-       <td>{transaction.tType}</td>
-       <td>{transaction.amount}</td>
-             </tr>
+                <tr key={transaction.transaction_id}>
+                  <td>{transaction.transaction_time.slice(8,10)+"/"+transaction.transaction_time.slice(5,7)+"/"+transaction.transaction_time.slice(0,4) +" at "+transaction.transaction_time.slice(11,16)}</td>
+          <td>{transaction.from_account}</td>
+          <td>{transaction.to_account}</td>
+          <td>{"Withdraw"}</td>
+          <td>{transaction.amount*-1}</td>
+                </tr>
               ))}
             </tbody>
           </table>

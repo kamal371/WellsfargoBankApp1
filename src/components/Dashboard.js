@@ -51,11 +51,11 @@ const Dashboard = () => {
   const loadUsers = async () => {
   var token = window.sessionStorage.getItem("token");
   console.log("the token: "+token);
-  //const config = {headers: {Authorization: 'Bearer ${token}','Access-Control-Allow-Origin':"http://localhost:8080",'Content-Type':'application/json','Access-Control-Allow-Credentials':true}};
-  var userName = window.sessionStorage.getItem("userName");
+  const config = {headers: {Authorization: "Bearer" + token}};
+  var userName = window.sessionStorage.getItem("userName",config);
   console.log("Username is: "+userName)
   
-  const result = await axios.get("http://localhost:8080/customer/bymail/"+userName );
+  const result = await axios.get("http://localhost:8080/customer/bymail/"+userName,config);
 
   console.log("dashboard",result);
   customerID = result.data.customer_id;
