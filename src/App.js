@@ -21,7 +21,8 @@ import AccountSummary from './components/AccountSummary';
 import './components/TransactionHistory.css';
 import TransactionHistory from './components/TransactionHistory';
 import WithdrawPage from './components/WithdrawPage';
-import AccountSelection from './components/AccountSelection'
+import AccountSelection from './components/AccountSelection';
+import AddBeneficiaryPage from './components/AddBeneficiaryPage';
 
 function App() {
 
@@ -68,6 +69,7 @@ function App() {
           <Route path="/transaction-history" element={<TransactionHistory />} />
           <Route path="/withdraw-page" element={<WithdrawPage />} />
           <Route path="/account-selection" element={<AccountSelection />} />
+          <Route path="/add-beneficiary" element={<AddBeneficiaryPage />} />
         </Routes>
       </div>
     
