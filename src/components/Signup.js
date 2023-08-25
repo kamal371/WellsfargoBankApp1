@@ -6,8 +6,8 @@ function Signup() {
   const [customer_name, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [customerId,setCustomerId]=useState('');
-  setCustomerId(1);//some default value
+  const [customerId,setCustomerId]=useState('');//kamal
+ // setCustomerId(1);//some default value//kamal
   //const [confirmPassword, setConfirmPassword] = useState('');
   // const [aadhar, setAadhar] = useState('');
   // const [address, setAddress] = useState('');
@@ -67,20 +67,22 @@ const handleSubmit = async (e) => {
   
     if (Object.keys(validationErrors).length === 0) {
       try {
-        let data = JSON.stringify({
+        let data = {
           customer_name:customer_name,
           password:password,
           email:email,
           contact:contact,
-          customer_id:customerId
-        })
-        const response = await axios({url:'http://localhost:8090/admin/customer', 
+          //customer_id:customerId
+        }
+        console.log("data in signup.js :",data);
+        const response = await axios({url:'http://localhost:8080/admin/customer', 
           method: 'POST',
           data,
           headers: {
             'Content-Type': 'application/json',
           },
         });
+        console.log("response in signup.js :",response);
 
         console.log(response)
   
