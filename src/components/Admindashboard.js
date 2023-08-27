@@ -2,35 +2,69 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import './Admindashboard.css';
 import './TableWithButtons.css';
+import AdminView from './Adminview.js';
+import { useNavigate } from 'react-router-dom';
+import TableWithSearch from './TableWithSearch';
+
+var index;
+var tableData;
 
 function AdminDashboard() {
   const [user, setUsers] = useState([]);
+  const navigate = useNavigate(); // Access the navigate function
 
   useEffect(() => {
     loadUsers();
+    //handleViewClick();
   }, []);
 
   const loadUsers = async () => {
     const result = await axios.get("http://localhost:8080/admin/admin");
+    console.log("admin dashboard result.data ",result.data);
+    // window.sessionStorage.setItem("admin_data",result.data);
+    // console.log("tableDta in loadUsers in admindashboard.js :",window.sessionStorage.getItem("admin_data"))
     setUsers(result.data);
   };
-  const handleEditClick = (index) => {
+  const handleDeleteClick = (index) => {
     console.log(`Edit clicked for row ${index}`);
     // Implement your edit logic here
-    
+
   };
 
-  const handleViewClick = (index) => {
+  const handleViewClick = async (index) => {
     console.log(`View clicked for row ${index}`);
+    //window.sessionStorage.setItem("admin_customer_id ",user[index].customer_id);
+    window.sessionStorage.setItem("admin_customer_id",user[index].customer_id);
+    console.log("iN Adminview.js user[index].customer_id ",user[index].customer_id);
     // Implement your delete logic here
+    navigate('/admin-view');
   };
+
+// search bar implementatio
+   tableData=user;
+   console.log("tableDta in admindashboard.js :",{tableData});
+  //  tableData=[{
+  //       "password": "PriPass",
+  //       "email": "unocusto@mail.com",
+  //       "contact": 12345,
+  //       "loginAttempt": 0,
+  //       "activeStatus": true,
+  //       "lastLogin": null,
+  //       "customer_name": "UnoCusto",
+  //       "customer_id": 1
+  //   }];
+
   return (
     <div className="admin-dashboard-container">
       <h2>Admin Dashboard</h2>
+      <div>
+      
+        <TableWithSearch tableData={tableData} />
+      </div>
       <table>
         <thead>
           <tr>
-            <th>ID</th>
+            <th>Customer Id</th>
             <th>Username</th>
             <th>Email</th>
             <th>Contact</th>
@@ -48,8 +82,8 @@ function AdminDashboard() {
               <td>{user.contact}</td>
               <td>
                 <div className="button-container">
-                  <button onClick={() => handleViewClick(index)}>View</button>
-                  <button onClick={() => handleEditClick(index)}>Edit</button>
+                  <button onClick={() => handleViewClick(index)}>View/Edit</button>
+                  <button onClick={() => handleDeleteClick(index)}>Delete</button>
                 </div>
               </td>
             </tr>

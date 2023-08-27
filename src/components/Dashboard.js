@@ -23,8 +23,10 @@ import './Login.css';
 import dashboard_navbar from './dashboard_navbar';
 //import TransferMoney from './TransferMoney';
 //var dat = window.sessionStorage.getItem("userCredentials");
-var userName = window.sessionStorage.getItem("userName");
-var token = window.sessionStorage.getItem("token");
+
+// var userName = window.sessionStorage.getItem("userName"); kamal-latest-change
+// var token = window.sessionStorage.getItem("token"); kamal-laetst-change
+
 //  var data = JSON.parse(dat);
 var customerID,customer_name,email,contact;
 // var customerID= "Dummy"//data["customer_id"];
@@ -38,7 +40,7 @@ const Dashboard = () => {
  // var customerID;
  // account details and balance
 
- const [amount, setAmount] = useState("");
+ const [amount, setAmount] = useState(null);
  const [accountOptions, setAccountOptions] = useState([]);
 
 
@@ -62,7 +64,8 @@ const Dashboard = () => {
   customer_name = result.data.customer_name;
   email = result.data.email;
   contact = result.data.contact;
-  window.sessionStorage.setItem("userId",customerID);
+  window.sessionStorage.setItem("userId",customerID);// kamal-new-change
+  //window.sessionStorage.setItem("customer_name",customer_name);//kamal-change
   
     //setUsers(result.data);
   };
@@ -80,9 +83,6 @@ const Dashboard = () => {
             {/* <div className="logo">My Sidebar</div> */}
             <ul className="sidebar-menu">
               <li>
-              <Link to="/login">Home</Link>
-              </li>
-              <li>
               <Link to="/create-account">Create Account</Link>
               </li>
               <li>
@@ -96,6 +96,9 @@ const Dashboard = () => {
               </li>
               <li>
               <WithdrawPage />
+              </li>
+              <li>
+              <Link to="/login">Log Out</Link>
               </li>
             </ul>
           </div>

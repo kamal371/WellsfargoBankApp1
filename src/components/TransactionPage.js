@@ -33,8 +33,10 @@ const TransactionPage = () => {
       console.log(accounts.length)
       var accountids =  [];
       for(let i=0;i<accounts.length;i++){
-        console.log(response.data[i]);
+       // console.log(response.data[i]);
+       if(response.data[i].activity===1){
         accountids[i] = response.data[i];
+      }
       }
       console.log(accountids);
       setAccountOptions(accountids); // Assuming the response contains account data

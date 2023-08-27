@@ -1,0 +1,10 @@
+.small-button {
+    padding: 6px 12px;
+    font-size: 14px;
+    border: 1px solid white; /* Blue border color */
+    background-color: white; /* Blue background color */
+    color: #ffffff; /* White text color */
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  

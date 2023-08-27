@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css'; // You can create this CSS file for styling
 import axios from 'axios';
 import Navbar from './Navbar';
 
 function Login({setUserName}) {
+  //sessionStorage.clear()
+  const [userName, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [emailError, setEmailError] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);
+  const [loginError, setLoginError] = useState(null);
 
-  const [userName, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [loginError, setLoginError] = useState('');
-
+  //sessionStorage.removeItem("userName");
   
   const navigate = useNavigate(); // Access the navigate function
 
@@ -29,20 +30,28 @@ function Login({setUserName}) {
   };
 
   const validatePassword = () => {
-    if (password.length < 6) {
+    if(password===null){
+      setPasswordError('');
+    }
+    else if (password.length < 6) {
       setPasswordError('Password must be at least 6 characters long');
     } else {
       setPasswordError('');
     }
     console.log("validatepassword");
   };
-
+  
+  // useEffect(() => {
+  //   handleSubmit();
+  //  // fetchAccountOptions();
+  // }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
     validateEmail();
     validatePassword();
 
     if (emailError === '' && passwordError === '') {
+      //sessionStorage.clear();
         try {
            // const response = await axios.get(`http://localhost:8000/users?email=${email}&password=${password}`);
            const UserData={
@@ -62,7 +71,9 @@ function Login({setUserName}) {
             if(response.data)
             {
               console.log('Login successful');
+              
               //setUserName(user.name); // Set user's name in state or context
+              
               navigate('/dashboard');
             } else {
               // User not found
@@ -87,6 +98,12 @@ function Login({setUserName}) {
     }
     
   };
+
+  // useEffect for form validation
+  useEffect(() => {
+    validateEmail();
+    validatePassword();
+  }, [userName, password]);
 
   return (
 

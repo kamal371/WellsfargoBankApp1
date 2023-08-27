@@ -71,13 +71,16 @@ const AccountSelection = () => {
       const response = await axios.get("http://localhost:8080/account/readCustomer/"+userId); // Replace with your endpoint
       console.log("Kamal's acciynts")
       console.log("response :",response);
-      console.log("response.data :",response.data);
+      console.log("response.data in accountselection.js :",response.data);
       var accounts = response.data
       console.log(accounts.length)
       var accountids =  [];
       for(let i=0;i<accounts.length;i++){
         //console.log(response.data[i]);
-        accountids[i] = response.data[i];
+        if(response.data[i].activity===1){
+          accountids[i] = response.data[i];
+        }
+        
       }
       console.log(accountids);
       setAccountOptions(accountids); // Assuming the response contains account data

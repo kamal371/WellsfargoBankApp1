@@ -105,7 +105,9 @@ const AccountSummary =  () => {
       var accountids =  [];
       for(let i=0;i<accounts.length;i++){
         //console.log(response.data[i]);
-        accountids[i] = response.data[i];
+        if(response.data[i].activity===1){
+          accountids[i] = response.data[i];
+        }
       }
       console.log(accountids);
       setAccountOptions(accountids); // Assuming the response contains account data
@@ -138,10 +140,10 @@ const AccountSummary =  () => {
       <div className="account_table">
       <button onClick={handleClick}>Check Account Details</button>
         <table>
-          <tr>
+          {/* <tr>
             <th>UserName</th>
             <td>{userName}</td>
-          </tr>
+          </tr> */}
           <tr>
             <th>Customer ID</th>
             <td>{customerId}</td>
