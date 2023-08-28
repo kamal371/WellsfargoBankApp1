@@ -12,7 +12,8 @@ import axios from 'axios';
 import styled from 'styled-components';
 import LockIcon from '@mui/icons-material/Lock';
 import BankImage from './bank-image.jpg'; // Replace with your bank's image
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const theme = createTheme({
   palette: {
     primary: {
@@ -82,6 +83,7 @@ const Login = ({ setUserName }) => {
   };
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
     validateEmail();
     validatePassword();
@@ -93,16 +95,24 @@ const Login = ({ setUserName }) => {
           password,
         };
         const response = await axios.post('http://localhost:8080/authenticate', UserData);
-
+        console.log(response)
         if (response.data) {
           window.sessionStorage.setItem('token', JSON.stringify(response.data));
           window.sessionStorage.setItem('userName', userName);
           navigate('/dashboard');
         } else {
           setLoginError('Invalid email or password');
+          toast(""+response.error, {
+            position: 'bottom-center',
+            autoClose: 3000,
+          });
         }
       } catch (error) {
         setLoginError('An error occurred');
+        toast(""+error, {
+          position: toast.POSITION.BOTTOM_CENTER
+        });
+       
         console.error('Error:', error);
       }
     }
@@ -110,6 +120,7 @@ const Login = ({ setUserName }) => {
 
   return (
     <ThemeProvider theme={theme}>
+      <ToastContainer></ToastContainer>
       <StyledContainer maxWidth="xs">
         <StyledLockIcon />
         <Typography variant="h4" gutterBottom>

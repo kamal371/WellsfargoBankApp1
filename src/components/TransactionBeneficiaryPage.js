@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { useNavigate } from 'react-router-dom';
+import './TransactionBeneficiaryPage.css'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const TransactionBeneficiaryPage = () => {
   // State variables for dropdown options and form inputs
   const [fromAccountOptions, setFromAccountOptions] = useState([]);
@@ -14,7 +17,7 @@ const TransactionBeneficiaryPage = () => {
   const [remarks, setRemarks] = useState('');
   const [instructions, setInstructions] = useState('');
   const [selectedToId, setSelectedToId] = useState('');
-
+  const navigate = useNavigate();
   var from_customerid = sessionStorage.getItem("userId");
   
   // Fetch 'from account' and 'to customer' data when component mounts
@@ -107,6 +110,12 @@ const TransactionBeneficiaryPage = () => {
     setInstructions(event.target.value);
   };
 
+  const handleAddBeneficiary = () => {
+    
+    navigate('/add-beneficiary'); 
+  };
+  
+
   // Event handler for form submission
   const handleSubmit = async event => {
     event.preventDefault();
@@ -129,18 +138,36 @@ const TransactionBeneficiaryPage = () => {
       };
 
       // Make a POST request to the backend API for transaction submission
-      const response = await axios.post('http://localhost:8080/customer/transaction', transactionData); // Replace with actual endpoint
-
-      // Handle the response from the backend (e.g., show success message)
-      console.log('Transaction submitted:', response.data);
+      const response = await axios.post('http://localhost:8080/customer/transaction', transactionData).catch(function (error) {
+        if (error.response) {
+          toast(error.response.data.message);
+        }
+      }); // Replace with actual endpoint
+      console.log(response)
+      if(response)
+      {
+        toast("Transaction Successfull");
+        console.log('Transaction submitted:', response.data);
+        setFromAccountId('');
+  setToCustomerId('');
+ setToAccountId('');
+   setAmount('');
+ setTransactionType('');
+   setRemarks('');
+   setInstructions('');
+      }
+    
+      
     } catch (error) {
-      console.error('Error submitting transaction:', error);
+      toast('Error submitting transaction:', error);
+     
       // Handle the error (e.g., show error message)
     }
   };
 
   return (
     <div>
+      <ToastContainer></ToastContainer>
       <h1>Transaction Page</h1>
       <form onSubmit={handleSubmit}>
         {/* Dropdown for 'from account' */}
@@ -167,6 +194,7 @@ const TransactionBeneficiaryPage = () => {
             ))}
           </select>
         </div>
+        <button onClick={handleAddBeneficiary}>Add Beneficiary</button>
         {/* Dropdown for 'to account' */}
         <div>
           <label htmlFor="toAccount">To Account:</label>
