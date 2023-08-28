@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Navbar from "./Navbar";
+import SideNavbar from './SideNavbar.js';
 
 const AddBeneficiaryPage = () => {
   const [name, setBeneficiaryName] = useState('');
@@ -40,7 +40,8 @@ const AddBeneficiaryPage = () => {
 
   return (
     <div>
-
+    
+      <SideNavbar />
       <h2>Add Beneficiary</h2>
       <form onSubmit={handleSubmit}>
         <div>

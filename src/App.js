@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { RouterProvider, createBrowserRouter} from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import Login from './components/Login.js';
 import './components/Login.css';
