@@ -15,8 +15,10 @@ import './components/Adminlogin.css';
 import CreateAccount from './components/CreateAccount';
 import './components/CreateAccount.css';
 import Navbar from './components/Navbar';
+import TransactionBeneficiaryPage from './components/TransactionBeneficiaryPage';
+import './components/TransactionBeneficiaryPage.css';
 import TransactionPage from './components/TransactionPage';
-import './components/TransactionPage.css';
+//import './components/TransactionBeneficiaryPage.css';
 import AccountSummary from './components/AccountSummary';
 import './components/TransactionHistory.css';
 import TransactionHistory from './components/TransactionHistory';
@@ -65,6 +67,7 @@ function App() {
           <Route path="/admindashboard" element={<AdminDashboard />} />
           <Route path="/create-account" element={<CreateAccount/>}/>
           <Route path="/transaction-page" element={<TransactionPage />} />
+          <Route path="/transaction-beneficiary-page" element={<TransactionBeneficiaryPage />} />
           <Route path="/account-summary" element={<AccountSummary />} />
           <Route path="/transaction-history" element={<TransactionHistory />} />
           <Route path="/withdraw-page" element={<WithdrawPage />} />

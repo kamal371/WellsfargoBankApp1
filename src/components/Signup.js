@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
-import axios from "axios";
-import './Signup.css'; // You can create this CSS file for styling
+import {
+  TextField,
+  Button,
+  Container,
+  Paper,
+  Typography,
+  Avatar,
+  ThemeProvider,
+  createTheme,
+} from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import axios from 'axios';
 
-function Signup() {
+const theme = createTheme();
+
+const Signup = () => {
   const [customer_name, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [customerId,setCustomerId]=useState('');
-  //some default value
-  //const [confirmPassword, setConfirmPassword] = useState('');
-  // const [aadhar, setAadhar] = useState('');
-  // const [address, setAddress] = useState('');
-  // const [dob, setDob] = useState('');
   const [contact, setPhone] = useState('');
-  
   const [errors, setErrors] = useState({});
 
   const validateEmail = () => {
@@ -32,66 +37,33 @@ function Signup() {
     }
   };
 
-  // const validateAadhar = () => {
-  //   if (aadhar.length !== 14) {
-  //     setErrors({ ...errors, aadhar: 'Aadhar number must be 14 digits' });
-  //   } else {
-  //     setErrors({ ...errors, aadhar: '' });
-  //   }
-  // };
-
   const validateForm = () => {
     const validationErrors = {};
     validateEmail();
     validatePassword();
-    //validateAadhar();
-    
-    // Implement more validation rules here
-
     return validationErrors;
   };
 
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     const validationErrors = validateForm();
-    
-//     if (Object.keys(validationErrors).length === 0) {
-      
-//     } else {
-//       setErrors(validationErrors);
-//     }
-//   };
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
-  
+
     if (Object.keys(validationErrors).length === 0) {
       try {
-        let data = JSON.stringify({
-          customer_name:customer_name,
-          password:password,
-          email:email,
-          contact:contact,
-          customer_id:customerId
-        })
-        const response = await axios({url:'http://localhost:8080/admin/customer', 
-          method: 'POST',
-          data,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+        const data = {
+          customer_name,
+          password,
+          email,
+          contact,
+        };
+        const response = await axios.post('http://localhost:8080/admin/customer', data);
 
-        console.log(response)
-  
         if (response) {
           console.log('User registered successfully');
-          //java.lang.System.out.println("Successful");
-          window.alert("Successfully Registered");
-          // Optionally, you can redirect the user to another page
+          window.alert('Successfully Registered');
         } else {
           console.error('Error registering user');
-          window.alert("Failed to register");
+          window.alert('Failed to register');
         }
       } catch (error) {
         console.error('Error:', error);
@@ -102,56 +74,76 @@ const handleSubmit = async (e) => {
   };
 
   return (
-    <div className="signup-container">
-      <h2>Sign Up</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="input-group">
-          <label>Customer name</label>
-          <input
-            type="text"
-            value={customer_name}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div className="input-group">
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onBlur={validatePassword}
-            required
-          />
-          {errors.password && <span className="error-message">{errors.password}</span>}
-        </div>
-        
-        <div className="input-group">
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            onBlur={validateEmail}
-            required
-          />
-          {errors.email && <span className="error-message">{errors.email}</span>}
-        </div>
-
-        <div className="input-group">
-          <label>Phone Number</label>
-          <input
-            type="tel"
-            value={contact}
-            onChange={(e) => setPhone(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Sign Up</button>
-      </form>
-    </div>
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs">
+        <Paper elevation={3} className="signup-container">
+          <Avatar className="avatar">
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign Up
+          </Typography>
+          <form className="form" onSubmit={handleSubmit}>
+            <TextField
+              label="Customer Name"
+              type="text"
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              value={customer_name}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+            <TextField
+              label="Password"
+              type="password"
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onBlur={validatePassword}
+              required
+              error={!!errors.password}
+              helperText={errors.password}
+            />
+            <TextField
+              label="Email"
+              type="email"
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onBlur={validateEmail}
+              required
+              error={!!errors.email}
+              helperText={errors.email}
+            />
+            <TextField
+              label="Phone Number"
+              type="tel"
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              value={contact}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              size="large"
+            >
+              Sign Up
+            </Button>
+          </form>
+        </Paper>
+      </Container>
+    </ThemeProvider>
   );
-}
+};
 
 export default Signup;
-
