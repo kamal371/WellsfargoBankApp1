@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios"; // Make sure to install axios using `npm install axios`
-
+import {Link} from 'react-router-dom';
 const TransactionPage = () => {
   const [from_account, setFromAccountId] = useState("");
   const [to_account, setToAccountId] = useState("");
@@ -12,6 +12,7 @@ const TransactionPage = () => {
   const [tType, setTypeOfTransaction] = useState("");
   const [transactionSuccess, setTransactionSuccess] = useState(false);
   const [transactionFailure, setTransactionFailure] = useState(false);
+  const [beneficiaries, setBeneficiaries] = useState([]);
   const transactionTypeMap = {
     IMPS: 2,
     RTGS: 1,
@@ -20,6 +21,7 @@ const TransactionPage = () => {
 
   useEffect(() => {
     // Fetch account options from the backend when the component mounts
+    fetchBeneficiaries(); 
     fetchAccountOptions();
   }, []);
 
@@ -42,6 +44,17 @@ const TransactionPage = () => {
       setAccountOptions(accountids); // Assuming the response contains account data
     } catch (error) {
       console.error("Error fetching account options:", error);
+    }
+  };
+
+  const fetchBeneficiaries = async () => {
+    try {
+      const response = await axios.get(
+        'http://localhost:8080/customer/beneficiaries'
+      );
+      setBeneficiaries(response.data);
+    } catch (error) {
+      console.error('Error fetching beneficiaries:', error);
     }
   };
 
@@ -115,7 +128,7 @@ const TransactionPage = () => {
           ))}
         </select>
       </div>
-      <div className="form-group">
+      {/* <div className="form-group">
           <label>To Account ID</label>
           <input
             type="text"
@@ -124,7 +137,29 @@ const TransactionPage = () => {
             value={to_account}
             onChange={(e) => setToAccountId(e.target.value)}
           />
-        </div>
+        </div> */}
+        <div className="form-group">
+  <label>To Account</label>
+  <input
+    type="text"
+    className="form-control"
+    placeholder="Enter or select a beneficiary account number"
+    value={to_account}
+    onChange={(e) => setToAccountId(e.target.value)}
+    list="beneficiary-list"
+  />
+  <datalist id="beneficiary-list">
+    {beneficiaries.map((beneficiary) => (
+      <option
+        key={beneficiary.id}
+        value={beneficiary.accountNumber}
+      >
+        {beneficiary.accountName} - {beneficiary.accountNumber}
+      </option>
+    ))}
+  </datalist>
+  <Link to="/add-beneficiary">Add Beneficiary</Link>
+</div>
         <div className="form-group">
           <label>Amount</label>
           <input

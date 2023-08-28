@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Login.css'; // You can create this CSS file for styling
+import { TextField, Button, Typography, Container, CssBaseline } from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { styled } from '@mui/system';
 import axios from 'axios';
 import Navbar from './Navbar';
 
@@ -26,7 +28,6 @@ function Login({setUserName}) {
     } else {
       setEmailError('');
     }
-    console.log("validateemdail");
   };
 
   const validatePassword = () => {
@@ -38,7 +39,6 @@ function Login({setUserName}) {
     } else {
       setPasswordError('');
     }
-    console.log("validatepassword");
   };
   
   // useEffect(() => {
@@ -96,7 +96,6 @@ function Login({setUserName}) {
             
           }
     }
-    
   };
 
   // useEffect for form validation
@@ -106,41 +105,55 @@ function Login({setUserName}) {
   }, [userName, password]);
 
   return (
-
-    <>
-    
-    {/* <Navbar/> */}
-   
-    <div className="login-container">
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="input-group">
-          <label>Email</label>
-          <input
-            type="email"
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <FormContainer>
+        <LockOutlinedIcon style={{ color: '#e53935' }} />
+        <RedTypography component="h1" variant="h5">
+          Login
+        </RedTypography>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
             value={userName}
             onChange={(e) => setEmail(e.target.value)}
             onBlur={validateEmail}
-            required
+            autoFocus
           />
           {emailError && <span className="error-message">{emailError}</span>}
-        </div>
-        <div className="input-group">
-          <label>Password</label>
-          <input
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
             type="password"
+            id="password"
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             onBlur={validatePassword}
-            required
           />
           {passwordError && <span className="error-message">{passwordError}</span>}
-        </div>
-        {loginError && <span className="error-message">{loginError}</span>}
-        <button type="submit">Login</button>
-      </form>
-    </div>
-    </>
+          {loginError && <span className="error-message">{loginError}</span>}
+          <RedSubmitButton
+            type="submit"
+            fullWidth
+            variant="contained"
+          >
+            Login
+          </RedSubmitButton>
+        </form>
+      </FormContainer>
+    </Container>
   );
 }
 
