@@ -9,6 +9,7 @@ import TransactionPage from './TransactionBeneficiaryPage';
 import TransactionHistory from './TransactionHistory';
 import CheckBalance from './check_balance';
 import WithdrawPage from './WithdrawPage';
+import SideNavbar from './SideNavbar';
 import AccountSelection from './AccountSelection';
 //import CreateAccount from './CreateAccount';
 import Login from './Login';
@@ -78,34 +79,7 @@ const Dashboard = () => {
     
       <div className='app'>
 
-        <nav>
-          <div className="sidebar">
-            {/* <div className="logo">My Sidebar</div> */}
-            <ul className="sidebar-menu">
-              <li>
-              <Link to="/create-account">Create Account</Link>
-              </li>
-              <li>
-              <Link to="/account-summary">Account Summary</Link>
-              </li>
-              <li>
-              <Link to="/transaction-page">Internet Banking</Link>
-              </li>
-              <li>
-              <Link to="/transaction-beneficiary-page">Internet Banking with beneficiary</Link>
-              </li>
-              <li>
-              <Link to="/transaction-history">Transaction History</Link>
-              </li>
-              <li>
-              <WithdrawPage />
-              </li>
-              <li>
-              <Link to="/login">Log Out</Link>
-              </li>
-            </ul>
-          </div>
-        </nav>
+        <SideNavbar />
         <main className="content">
           <div className="account-summary">
             <h1>User Details</h1>

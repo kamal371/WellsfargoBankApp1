@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import './TransactionBeneficiaryPage.css'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import SideNavbar from './SideNavbar';
 const TransactionBeneficiaryPage = () => {
   // State variables for dropdown options and form inputs
   const [fromAccountOptions, setFromAccountOptions] = useState([]);
@@ -167,6 +168,7 @@ const TransactionBeneficiaryPage = () => {
 
   return (
     <div>
+      <SideNavbar />
       <ToastContainer></ToastContainer>
       <h1>Transaction Page</h1>
       <form onSubmit={handleSubmit}>
