@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './TransactionHistory.css';
 
+
+
 var selected_acc;
 
 const TransactionHistory = () => {
@@ -51,42 +53,57 @@ const TransactionHistory = () => {
       console.error('Error fetching transactions:', error);
     }
   };
+  var debits = transactions.debits;
+  var credits = transactions.credits;
+  var withdrawals = transactions.withdrawals;
 
-  const handleAccountSelect = (accountId) => {
+  const [balanceMessage,setBalanceMessage] = useState("please select an account");
+  const [visible,setVisible] = useState(false);
+
+  const handleAccountSelect = async (accountId) => {
     selected_acc = accountId;
     setSelectedAccountId(accountId);
+    const result = await  axios.get("http://localhost:8080/account/read/"+accountId)
+    console.log("balance is: Rs."+result.data.balance);
+    console.log("Account id is: ",accountId);
+    if(accountId){
+      setBalanceMessage("Current Balance: Rs."+result.data.balance);
+      setVisible(true);
+    }
   };
 
+const columns = [
+  {label:"Transaction Time", accessor: "transaction_time",sortable:true},
+  {label:"Payer", accessor: "payer",sortable:false},
+  {label:"Payee", accessor: "payee",sortable:false},
+  {label:"Type", accessor: "type",sortable:true},
+  {label:"Amount", accessor: "amount",sortable:true},
+];
 
-let count = 1;
-console.log(count);
-count += 1;
-var debits = transactions.debits;
-try{
-  for(let i=0;i<debits.length;i++){
-    debits[i].amount *= -1;
-  }
-  console.log("Proscuitto: "+debits[0].amount); 
-} catch (err){
-  console.log(err);
-}
+// const TableHead = ({columns,handleSorting}) => {
+//   const [sortField,setSortField] = useState("");
+//   const [order, setOrder] = useState("asc");
+// };
 
- 
-//debits[0].amount *= -1;
+// const TableData = ({columns,tableData}) => {
+//   return (
+//     <tbody>
+//       {tableData.map}
+//     </tbody>
+//   );
+// };
 
-var credits = transactions.credits;
-var withdrawals = transactions.withdrawals;
-console.log("Prescuitto: "+typeof(withdrawals));
-try{
-  for(let i=0;i<withdrawals.length();i++){
-    withdrawals.amount *= -1;
-    withdrawals.tType = "Withdraw"
-  }
-} catch(err){
-  console.log("No withdrawals " + err);
-}
-//withdrawals.tType *= -1;
-//withdrawals[0].tType = "Withdrawn";
+// const handleSortingChange = (accessor) => {
+//   const sortOrder = accessor === sortField && order === "asc" ? "desc" : "asc";
+//   setSortField(accessor);
+//   setOrder(sortOrder);
+//   handleSorting(accessor,sortOrder);
+// };
+
+// const handleSorting = (sortField, sortOrder) => {
+//   console.log(sortField,sortOrder)
+// }
+
 
 
   return (
@@ -106,13 +123,26 @@ try{
           ))}
         </select>
       </div>
+      <div>
+            {visible && <h1>{balanceMessage}</h1>}
+      </div>
+      {/* <div className="table_container">
+        <h1>Reusable sortable table with React</h1>
+        <Table
+          caption="Developers currently enrolled in this course. The table below is ordered (descending) by the Gender column."
+          data={debits}
+          columns={columns}
+        />
+      </div> */}
       <div className="transaction-tables">
         <div className="transaction-table">
-          <h2>Debits</h2>
+          <h2>Transactions</h2>
           <table>
-            {/* Table header */}
+            
+            
             <thead>
               <tr>
+                
                 <th>Transaction Time</th>
                 <th>Payer</th>
                 <th>Payee</th>
@@ -152,7 +182,8 @@ try{
           </table>
         </div>
       </div>
-    </div>
+    </div> 
+
   );
 };
 

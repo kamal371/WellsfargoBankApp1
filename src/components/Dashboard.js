@@ -26,21 +26,20 @@ import dashboard_navbar from './dashboard_navbar';
 var userName = window.sessionStorage.getItem("userName");
 var token = window.sessionStorage.getItem("token");
 //  var data = JSON.parse(dat);
-var customerID,customer_name,email,contact;
+var customerID=null,customer_name=null,email=null,contact=null;
 // var customerID= "Dummy"//data["customer_id"];
 // var customer_name="Dummy"//data["customer_name"];
 // var email="Dummy"//data["email"];
 // var contact="Dummy"//data["contact"];
-console.log("Below is customer ID");
-console.log(customerID);
+
 // Define the Dashboard component
 const Dashboard = () => {
  // var customerID;
  // account details and balance
 
- const [amount, setAmount] = useState("");
- const [accountOptions, setAccountOptions] = useState([]);
-
+  const [amount, setAmount] = useState("");
+  const [accountOptions, setAccountOptions] = useState([]);
+  const [userdetails, setUserDetails] = useState([{"customer_id":null,"customer_name":null,"email":null,"contact":null}]);
 
 
   const [user, setUsers] = useState([]);
@@ -53,17 +52,19 @@ const Dashboard = () => {
   console.log("the token: "+token);
   const config = {headers: {Authorization: "Bearer" + token}};
   var userName = window.sessionStorage.getItem("userName",config);
-  console.log("Username is: "+userName)
+  console.log("Username in dashboard is: "+userName)
   
   const result = await axios.get("http://localhost:8080/customer/bymail/"+userName,config);
 
-  console.log("dashboard",result);
+  console.log(result.data);
+  setUserDetails([result.data]);
   customerID = result.data.customer_id;
   customer_name = result.data.customer_name;
   email = result.data.email;
   contact = result.data.contact;
   window.sessionStorage.setItem("userId",customerID);
-  
+  console.log("userdetails are: ");
+  console.log(userdetails[0]);
     //setUsers(result.data);
   };
 
@@ -103,10 +104,10 @@ const Dashboard = () => {
         <main className="content">
           <div className="account-summary">
             <h1>User Details</h1>
-            <table>
+            <table className='User-details-table'>
             <thead>
               <tr>
-                <th>customerID</th>
+                <th>ID</th>
                 <th>Username</th>
                 {/* <th>Password</th> */}
                 <th>Email</th>
@@ -114,13 +115,14 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody>
-                <tr>
-                  <td>{customerID}</td>
-                  <td>{customer_name}</td>
-                  {/* <td>{user.password}</td> */}
-                  <td>{email}</td>
-                  <td>{contact}</td>
-                </tr>
+                  {userdetails.map((userdetails) => (
+                    <tr>
+                      <td>{userdetails.customer_id}</td>
+                      <td>{userdetails.customer_name}</td>
+                      <td>{userdetails.email}</td>
+                      <td>{userdetails.contact}</td>
+                    </tr>
+                  ))}
             </tbody>
           </table>
           </div>

@@ -41,7 +41,7 @@ function Login({setUserName}) {
     e.preventDefault();
     validateEmail();
     validatePassword();
-
+    window.sessionStorage.setItem("userName",userName);
     if (emailError === '' && passwordError === '') {
         try {
            // const response = await axios.get(`http://localhost:8000/users?email=${email}&password=${password}`);
@@ -49,18 +49,19 @@ function Login({setUserName}) {
             userName,
             password
            };
-           console.log(JSON.stringify(UserData))
+           
            const response = await axios.post('http://localhost:8080/authenticate',UserData);
-           console.log(response);
-           window.sessionStorage.setItem("token", JSON.stringify(response.data));
-           window.sessionStorage.setItem("userName", userName)
-           console.log(userName);
+           //console.log(response);
+           
+           console.log("username after login is: "+userName);
            console.log(JSON.stringify(response.data))
            //const user = response.data.find((user) => user.email === email && user.password === password);
             // if (response.data.length > 0) {
               // User found
             if(response.data)
             {
+              window.sessionStorage.setItem("token", JSON.stringify(response.data));
+              window.sessionStorage.setItem("userName", userName)
               console.log('Login successful');
               //setUserName(user.name); // Set user's name in state or context
               navigate('/dashboard');
