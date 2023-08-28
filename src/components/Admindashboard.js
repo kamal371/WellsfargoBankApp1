@@ -11,7 +11,7 @@ var tableData;
 
 function AdminDashboard() {
   const [user, setUsers] = useState([]);
-
+  const [buttonStatus, setbuttonStatus] = useState('1');
   const navigate = useNavigate(); // Access the navigate function
 
   useEffect(() => {
@@ -36,6 +36,7 @@ function AdminDashboard() {
     console.log("user.customer_id in admindashboard.js :",user[index].customer_id);
     const update_customer_status = await axios.put("http://localhost:8080/admin/ActivateCustomer",customer_data);
     console.log("update_customer_status in admindashboard.js :",update_customer_status);
+    //setbuttonStatus(user[index].activate);
   };
 
   const handleViewClick = async (index) => {
@@ -75,7 +76,7 @@ function AdminDashboard() {
             <th>Username</th>
             <th>Email</th>
             <th>Contact</th>
-            <th></th>
+         
           </tr>
         </thead>
         <tbody>
@@ -87,6 +88,8 @@ function AdminDashboard() {
               {/* <td>{user.password}</td> */}
               <td>{user.email}</td>
               <td>{user.contact}</td>
+    
+              {/* <td>{buttonStatus}</td> */}
               <td>
                 <div className="button-container">
                   <button onClick={() => handleViewClick(index)}>View/Edit</button>
