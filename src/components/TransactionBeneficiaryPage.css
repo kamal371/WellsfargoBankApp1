@@ -1,0 +1,59 @@
+/* TransactionForm.css */
+
+/* Form container */
+.transaction-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Form fields */
+  .transaction-form-field {
+    margin-bottom: 1rem;
+    width: 50%;
+  }
+  
+  /* Text input fields */
+  .transaction-form-field input[type="text"],
+  .transaction-form-field input[type="number"],
+  .transaction-form-field textarea,
+  .transaction-form-field select {
+    width: 50%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    outline: none;
+  }
+  
+  /* Buttons */
+  .transaction-form-button {
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width:50%;
+  }
+  
+  .transaction-form-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .center {
+    display: block;
+    margin: 0 auto;
+    width:50%;
+    padding:0.25rem;
+  }
+  
+  /* Style for reducing field size */
+  /* .center select,
+  .center input[type="number"],
+  .center textarea {
+    width: 50%; 
+    padding: 0.25rem; 
+    font-size: 14px; 
+  } */

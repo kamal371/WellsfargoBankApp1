@@ -12,11 +12,16 @@ import {
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import axios from 'axios';
 import { Navigate, useNavigate } from 'react-router-dom';
-import Navbar from "./Navbar";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const theme = createTheme();
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#1e88e5', // Adjust the primary color to match your design
+    },
+  },
+});
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -43,12 +48,10 @@ const Signup = () => {
   };
 
   const validatePhone = () => {
-    if (contact<1000) {
-      setErrors({ ...errors, phone: 'Phone no must be atleast 4 digits ' });
-    }else if(contact>9999){
-      setErrors({ ...errors, phone: 'Phone no must be atleast 4 digits ' });
+    if (contact < 1000 || contact > 9999) {
+      setErrors({ ...errors, phone: 'Phone no must be 4 digits' });
     } else {
-      setErrors({ ...errors, password: '' });
+      setErrors({ ...errors, phone: '' });
     }
   };
 
@@ -72,7 +75,6 @@ const Signup = () => {
           email,
           contact,
         };
-        console.log(data);
         const response = await axios.post('http://localhost:8080/customer/customers', data).catch(function (error) {
           if (error.response) {
             toast(error.response.data.message);
@@ -82,10 +84,10 @@ const Signup = () => {
         if (response) {
           console.log('User registered successfully');
           window.alert('Successfully Registered');
-          navigate("/login");
+          navigate('/login');
         } else {
           console.error('Error registering user');
-          toast("Failed to register");
+          toast('Failed to register');
         }
       } catch (error) {
         console.error('Error:', error);
@@ -152,7 +154,10 @@ const Signup = () => {
               fullWidth
               value={contact}
               onChange={(e) => setPhone(e.target.value)}
+              onBlur={validatePhone}
               required
+              error={!!errors.phone}
+              helperText={errors.phone}
             />
             <Button
               type="submit"

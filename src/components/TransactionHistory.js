@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './TransactionHistory.css';
-import Navbar from "./Navbar";
+import { Container, Typography, Paper, Select, MenuItem, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import Navbar from './Navbar';
+import SideNavbar from './SideNavbar';
 
 const TransactionHistory = () => {
   const [selectedAccountId, setSelectedAccountId] = useState('');
@@ -37,80 +38,81 @@ const TransactionHistory = () => {
       const response = await axios.get(
         `http://localhost:8080/customer/transaction/` + accountId
       );
-      console.log('transactions', response.data);
       setTransactions(response.data);
     } catch (error) {
       console.error('Error fetching transactions:', error);
     }
   };
 
-
-  const [balanceMessage,setBalanceMessage] = useState("please select an account");
-  const [visible,setVisible] = useState(false);
+  const [balanceMessage, setBalanceMessage] = useState('Please select an account');
+  const [visible, setVisible] = useState(false);
 
   const handleAccountSelect = async (accountId) => {
-
     setSelectedAccountId(accountId);
-    const result = await  axios.get("http://localhost:8080/account/read/"+accountId)
-    console.log("balance is: Rs."+result.data.balance);
-    console.log("Account id is: ",accountId);
-    if(accountId){
-      setBalanceMessage("Current Balance: Rs."+result.data.balance);
+    const result = await axios.get(`http://localhost:8080/account/read/${accountId}`);
+    if (accountId) {
+      setBalanceMessage(`Current Balance: Rs. ${result.data.balance}`);
       setVisible(true);
     }
   };
 
-
-
   return (
-    <div className="transaction-history">
-      <h1>Transaction History</h1>
-      <div className="account-dropdown">
-        <label>Select Account:</label>
-        <select
-          value={selectedAccountId}
-          onChange={(e) => handleAccountSelect(e.target.value)}
-        >
-          <option value="">Select an account</option>
-          {accountOptions.map((accountId) => (
-            <option key={accountId} value={accountId}>
-              {accountId}
-            </option>
-          ))}
-        </select>
+    <div style={{ display: 'flex' }}>
+      <SideNavbar />
+      <div style={{ flex: 1, marginLeft: '50px', padding: '20px' }}>
+        <Container>
+          <Typography variant="h4" gutterBottom>
+            Transaction History
+          </Typography>
+          <Paper sx={{ p: 3, mb: 3 }}>
+            <div>
+              <Typography variant="subtitle1" gutterBottom>
+                Select Account:
+              </Typography>
+              <Select
+                value={selectedAccountId}
+                onChange={(e) => handleAccountSelect(e.target.value)}
+                fullWidth
+              >
+                <MenuItem value="">Select an account</MenuItem>
+                {accountOptions.map((accountId) => (
+                  <MenuItem key={accountId} value={accountId}>
+                    {accountId}
+                  </MenuItem>
+                ))}
+              </Select>
+            </div>
+            <div>
+              {visible && <Typography variant="h6">{balanceMessage}</Typography>}
+            </div>
+          </Paper>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Transaction Time</TableCell>
+                  <TableCell>From Account</TableCell>
+                  <TableCell>To Account</TableCell>
+                  <TableCell>Transaction Type</TableCell>
+                  <TableCell>Amount</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {transactions.map((transaction) => (
+                  <TableRow key={transaction.transaction_id}>
+                    <TableCell>{transaction.transaction_time}</TableCell>
+                    <TableCell>{transaction.from_account}</TableCell>
+                    <TableCell>{transaction.to_account}</TableCell>
+                    <TableCell>{transaction.tType}</TableCell>
+                    <TableCell>{transaction.amount}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Container>
       </div>
-      <div>
-            {visible && <h1>{balanceMessage}</h1>}
-      </div>
-      <div className="transaction-tables">
-        <div className="transaction-table">
-          <h2>All Transactions</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Transaction Time</th>
-                <th>From Account</th>
-                <th>To Account</th>
-                <th>Transaction Type</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {transactions.map((transaction) => (
-                <tr key={transaction.transaction_id}>
-                  <td>{transaction.transaction_time}</td>
-                  <td>{transaction.from_account}</td>
-                  <td>{transaction.to_account}</td>
-                  <td>{transaction.tType}</td>
-                  <td>{transaction.amount}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div> 
-
+    </div>
   );
 };
 

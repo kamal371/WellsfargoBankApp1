@@ -173,7 +173,7 @@ const TransactionBeneficiaryPage = () => {
       <h1>Transaction Page</h1>
       <form onSubmit={handleSubmit}>
         {/* Dropdown for 'from account' */}
-        <div>
+        <div  >
           <label htmlFor="fromAccount">From Account:</label>
           <select id="fromAccount" value={fromAccountId} onChange={handleFromAccountChange}>
             <option value="">Select an account</option>
@@ -196,7 +196,7 @@ const TransactionBeneficiaryPage = () => {
             ))}
           </select>
         </div>
-        <button onClick={handleAddBeneficiary}>Add Beneficiary</button>
+        <button className="center" onClick={handleAddBeneficiary}>Add Beneficiary</button>
         {/* Dropdown for 'to account' */}
         <div>
           <label htmlFor="toAccount">To Account:</label>
@@ -210,7 +210,7 @@ const TransactionBeneficiaryPage = () => {
           </select>
         </div>
         {/* Input field for 'amount' */}
-        <div>
+        <div className = "center">
           <label htmlFor="amount">Amount:</label>
           <input
             type="number"
@@ -255,7 +255,7 @@ const TransactionBeneficiaryPage = () => {
           />
         </div>
         {/* Submit button */}
-        <button type="submit">Submit Transaction</button>
+        <button className="center" type="submit">Submit Transaction</button>
       </form>
     </div>
   );

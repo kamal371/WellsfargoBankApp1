@@ -1,41 +1,3 @@
-// import React from 'react';
-// import { Link } from 'react-router-dom';
-// import WithdrawPage from './WithdrawPage'; // Import your WithdrawPage component here
-
-// const SideNavbar = () => {
-//   return (
-//     <nav>
-//       <div className="sidebar">
-//         <ul className="sidebar-menu">
-//           <li>
-//             <Link to="/create-account">Create Account</Link>
-//           </li>
-//           <li>
-//             <Link to="/account-summary">Account Summary</Link>
-//           </li>
-//           <li>
-//             <Link to="/transaction-page">Internet Banking</Link>
-//           </li>
-//           <li>
-//             <Link to="/transaction-beneficiary-page">Internet Banking with beneficiary</Link>
-//           </li>
-//           <li>
-//             <Link to="/transaction-history">Transaction History</Link>
-//           </li>
-//           <li>
-//             <WithdrawPage />
-//           </li>
-//           <li>
-//             <Link to="/login">Log Out</Link>
-//           </li>
-//         </ul>
-//       </div>
-//     </nav>
-//   );
-// };
-
-// export default SideNavbar;
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Drawer from '@mui/material/Drawer';
@@ -47,23 +9,24 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import HistoryIcon from '@mui/icons-material/History';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import WithdrawPage from './WithdrawPage';
+import { styled } from '@mui/material/styles';
+import WithdrawPage from './WithdrawPage.js';
 
 const drawerWidth = 240;
 
+const CustomDrawer = styled(Drawer)(({ theme }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  marginTop: '64px', // Adjust the marginTop value as needed
+  '& .MuiDrawer-paper': {
+    width: drawerWidth,
+  },
+}));
+
 const SideNavbar = () => {
   return (
-    <Drawer
-      variant="permanent"
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        '& .MuiDrawer-paper': {
-          width: drawerWidth,
-        },
-      }}
-    >
-      <div sx={{ height: '64px' }} />
+    <CustomDrawer variant="permanent">
+      <div style={{ height: '120px' }} />
       <List>
         <ListItem button component={Link} to="/create-account">
           <ListItemIcon>
@@ -101,6 +64,7 @@ const SideNavbar = () => {
           </ListItemIcon>
           <ListItemText primary={<WithdrawPage />} />
         </ListItem>
+        {/* Add more list items as needed */}
         <ListItem button component={Link} to="/login">
           <ListItemIcon>
             <ExitToAppIcon />
@@ -108,7 +72,7 @@ const SideNavbar = () => {
           <ListItemText primary="Log Out" />
         </ListItem>
       </List>
-    </Drawer>
+    </CustomDrawer>
   );
 };
 

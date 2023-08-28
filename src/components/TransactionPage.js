@@ -61,7 +61,8 @@ const TransactionPage = () => {
       <h1>Transaction Page</h1>
       <form onSubmit={handleSubmit}>
         {/* From Account */}
-        <div>
+        <div className="form-container">
+        <div className="form-field">
           <label htmlFor="fromAccount">From Account:</label>
           <select id="fromAccount" value={from_account} onChange={e => setFromAccountId(e.target.value)}>
             <option value="">Select an account</option>
@@ -74,19 +75,19 @@ const TransactionPage = () => {
         </div>
 
         {/* To Account */}
-        <div>
+        <div className="form-field">
           <label htmlFor="toAccount">To Account:</label>
           <input type="text" id="toAccount" value={to_account} onChange={e => setToAccountId(e.target.value)} />
         </div>
 
         {/* Amount */}
-        <div>
+        <div className="form-field">
           <label htmlFor="amount">Amount:</label>
           <input type="number" id="amount" value={amount} onChange={e => setAmount(e.target.value)} />
         </div>
 
         {/* Transaction Type */}
-        <div>
+        <div className="form-field">
           <label htmlFor="transactionType">Transaction Type:</label>
           <select id="transactionType" value={tType} onChange={e => setTransactionType(e.target.value)}>
             <option value="">Select a transaction type</option>
@@ -96,22 +97,24 @@ const TransactionPage = () => {
           </select>
         </div>
 
-        {/* Remarks */}
-        <div>
+        {/*  className="form-field"Remarks */}
+        <div className="form-field">
           <label htmlFor="remarks">Remarks:</label>
           <textarea id="remarks" value={remarks} onChange={e => setRemarks(e.target.value)} />
         </div>
 
         {/* Instructions */}
-        <div>
+        <div className="form-field"> 
           <label htmlFor="instructions">Instructions:</label>
           <textarea id="instructions" value={instructions} onChange={e => setInstructions(e.target.value)} />
         </div>
 
         {/* Submit button */}
-        <button type="submit">Submit Transaction</button>
+        <button className="form-button" type="submit">Submit Transaction</button>
+        </div>
       </form>
     </div>
+    
   );
 };
 
