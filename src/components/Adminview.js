@@ -25,6 +25,7 @@ const AdminView = () =>{
 
     const [email, setIsEmail] = useState("");
     const [contact, setContact] = useState('');
+    const [activestatus, setactivestatus] =useState('');
 
     const handleUsername = () => {
       // Change the value here
@@ -89,6 +90,7 @@ const AdminView = () =>{
          console.log("Customer email is in adminview.js ",result_customer.data.email);
          console.log("email in adminview.js ",email);
          setContact(result_customer.data.contact);
+         setactivestatus(result_customer.data.activeStatus);
 
         //  var a=window.sessionStorage.getItem("userId");//customer_id
         //  setCustomerId(a);
@@ -190,29 +192,7 @@ const AdminView = () =>{
             <button style={{ width: "100px", height: "50px",}} onClick={() => handleBackClick(index)}>Back</button>
           </div>
             <div className="editing-username">
-                <table>
-                    <tr>
-                        <th>Customer Name</th>
-                        <td>{userName}</td>
-                        {/* <td>
-                            <div className="button-container">
-                            <button onClick={() => handleUsername(index)}>Edit Username</button>
-                            </div>
-                        </td> */}
-                    </tr>
-                    <tr>
-                        <th>Customer ID</th>
-                        <td>{customerId}</td>
-                    </tr>
-                    {/* <tr>
-                        <th>Email ID</th>
-                        <td>{email}</td>
-                    </tr> */}
-                    <tr>
-                        <th>Contact</th>
-                        <td>{contact}</td>{/* change this to Contact */}
-                    </tr>
-                </table>
+
                 {/* <p>Value: {value}</p>
                 <button onClick={handleChangeValue}>Change Value</button> */}
             </div>
@@ -236,6 +216,35 @@ const AdminView = () =>{
             </div>
             <div className="account_table">
       <button onClick={handleClick}>Check Account Details</button>
+
+      <table>
+                    <tr>
+                        <th>Customer Name</th>
+                        <td>{userName}</td>
+                        {/* <td>
+                            <div className="button-container">
+                            <button onClick={() => handleUsername(index)}>Edit Username</button>
+                            </div>
+                        </td> */}
+                    </tr>
+                    <tr>
+                        <th>Customer ID</th>
+                        <td>{customerId}</td>
+                    </tr>
+                    {/* <tr>
+                        <th>Email ID</th>
+                        <td>{email}</td>
+                    </tr> */}
+                    <tr>
+                        <th>Contact</th>
+                        <td>{contact}</td>{/* change this to Contact */}
+                    </tr>
+                    <tr>
+                      <th>Status</th>
+                      <td>{activestatus}</td>
+                    </tr>
+                </table>
+
         <table>
           {/* <tr>
             <th>UserName</th>
