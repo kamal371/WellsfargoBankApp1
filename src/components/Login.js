@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   TextField,
@@ -75,19 +75,26 @@ const Login = ({ setUserName }) => {
   };
 
   const validatePassword = () => {
-    if (password.length < 6) {
+    if(password===null){
+      setPasswordError('');
+    }
+    else if (password.length < 6) {
       setPasswordError('Password must be at least 6 characters long');
     } else {
       setPasswordError('');
     }
   };
-
+  
+  // useEffect(() => {
+  //   handleSubmit();
+  //  // fetchAccountOptions();
+  // }, []);
   const handleSubmit = async (e) => {
 
     e.preventDefault();
     validateEmail();
     validatePassword();
-
+    window.sessionStorage.setItem("userName",userName);
     if (emailError === '' && passwordError === '') {
       try {
         const UserData = {
@@ -117,6 +124,12 @@ const Login = ({ setUserName }) => {
       }
     }
   };
+
+  // useEffect for form validation
+  useEffect(() => {
+    validateEmail();
+    validatePassword();
+  }, [userName, password]);
 
   return (
     <ThemeProvider theme={theme}>

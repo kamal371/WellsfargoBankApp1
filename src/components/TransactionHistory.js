@@ -51,15 +51,29 @@ const TransactionHistory = () => {
       console.error('Error fetching transactions:', error);
     }
   };
+  var debits = transactions.debits;
+  var credits = transactions.credits;
+  var withdrawals = transactions.withdrawals;
 
-  const handleAccountSelect = (accountId) => {
-    selected_acc = accountId;
+  const [balanceMessage,setBalanceMessage] = useState("please select an account");
+  const [visible,setVisible] = useState(false);
+
+  const handleAccountSelect = async (accountId) => {
+
     setSelectedAccountId(accountId);
+    const result = await  axios.get("http://localhost:8080/account/read/"+accountId)
+    console.log("balance is: Rs."+result.data.balance);
+    console.log("Account id is: ",accountId);
+    if(accountId){
+      setBalanceMessage("Current Balance: Rs."+result.data.balance);
+      setVisible(true);
+    }
   };
 
-  const debits = transactions.debits;
-const credits = transactions.credits;
-const withdrawals = transactions.withdrawals;
+
+
+  
+ 
 
 
   return (
@@ -78,6 +92,9 @@ const withdrawals = transactions.withdrawals;
             </option>
           ))}
         </select>
+      </div>
+      <div>
+            {visible && <h1>{balanceMessage}</h1>}
       </div>
       <div className="transaction-tables">
         <div className="transaction-table">
@@ -132,7 +149,8 @@ const withdrawals = transactions.withdrawals;
           </table>
         </div>
       </div>
-    </div>
+    </div> 
+
   );
 };
 

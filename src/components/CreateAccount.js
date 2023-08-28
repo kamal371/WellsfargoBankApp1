@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './CreateAccount.css';
 
-var userName;
+var username;
 var activity,account_id,customer_id;
 
-function CreateAccount({ userName }) {
+function CreateAccount({ username }) {
   const [transactionPassword, settransactionPassword] = useState('');
   const [accountType, setAccountType] = useState(''); // Default account type
   const [balance, setBalance] = useState(0); // Default balance
@@ -30,9 +30,9 @@ function CreateAccount({ userName }) {
     validatePassword();
     
     const accountId = generateUniqueId();
-    userName = window.sessionStorage.getItem("userName");
-    console.log("userName :",userName);
-    const result = await axios.get("http://localhost:8080/customer/bymail/"+userName );
+    username = window.sessionStorage.getItem("userName");
+    console.log("userName :",username);
+    const result = await axios.get("http://localhost:8080/customer/bymail/"+username );
     customer_id = result.data.customer_id;
     account_id=1;//default value at frontend
     activity=1;//default value at frontend
@@ -44,7 +44,7 @@ function CreateAccount({ userName }) {
       // //accountName,
       // accountType,
       balance,
-      userName,
+      username,
       transactionPassword,
       activity,
       accountType,
@@ -60,7 +60,7 @@ function CreateAccount({ userName }) {
       console.log("accountData without stringify :",accountData);
       //console.log(JSON.stringify(accountData));
       const response = await axios.post('http://localhost:8080/account/add', accountData);
-      console.log("response.data :",response.data);
+      console.log("response.data in createaccount.js :",response.data);
       if (response.data) {
         console.log('Account created successfully');
         // Optionally, you can show a success message to the user

@@ -34,7 +34,9 @@ function AdminLogin() {
 
     // Simulated admin login logic
     if (username === 'admin' && password === 'admin123') {
+      //console.log("before admin dashboard");
       navigate('/admindashboard');
+      console.log("into admin dashboard");
     } else {
       setLoginError('Invalid username or password');
     }

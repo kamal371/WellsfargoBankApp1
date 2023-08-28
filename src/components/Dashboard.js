@@ -23,24 +23,25 @@ import './Login.css';
 import dashboard_navbar from './dashboard_navbar';
 //import TransferMoney from './TransferMoney';
 //var dat = window.sessionStorage.getItem("userCredentials");
-var userName = window.sessionStorage.getItem("userName");
-var token = window.sessionStorage.getItem("token");
+
+// var userName = window.sessionStorage.getItem("userName"); kamal-latest-change
+// var token = window.sessionStorage.getItem("token"); kamal-laetst-change
+
 //  var data = JSON.parse(dat);
-var customerID,customer_name,email,contact;
+var customerID=null,customer_name=null,email=null,contact=null;
 // var customerID= "Dummy"//data["customer_id"];
 // var customer_name="Dummy"//data["customer_name"];
 // var email="Dummy"//data["email"];
 // var contact="Dummy"//data["contact"];
-console.log("Below is customer ID");
-console.log(customerID);
+
 // Define the Dashboard component
 const Dashboard = () => {
  // var customerID;
  // account details and balance
 
- const [amount, setAmount] = useState("");
- const [accountOptions, setAccountOptions] = useState([]);
-
+  const [amount, setAmount] = useState("");
+  const [accountOptions, setAccountOptions] = useState([]);
+  const [userdetails, setUserDetails] = useState([{"customer_id":null,"customer_name":null,"email":null,"contact":null}]);
 
 
   const [user, setUsers] = useState([]);
@@ -51,18 +52,20 @@ const Dashboard = () => {
   const loadUsers = async () => {
   var token = window.sessionStorage.getItem("token");
   console.log("the token: "+token);
-  const config = {headers: {Authorization: token}};
-  var userName = window.sessionStorage.getItem("userName");
-  console.log("Username is: "+userName)
+  const config = {headers: {Authorization: "Bearer" + token}};
+  var userName = window.sessionStorage.getItem("userName",config);
+  console.log("Username in dashboard is: "+userName)
   
-  const result = await axios.get("http://localhost:8080/customer/bymail/"+userName,config );
+  const result = await axios.get("http://localhost:8080/customer/bymail/"+userName,config);
 
-  console.log("dashboard",result);
+  console.log(result.data);
+  setUserDetails([result.data]);
   customerID = result.data.customer_id;
   customer_name = result.data.customer_name;
   email = result.data.email;
   contact = result.data.contact;
-  window.sessionStorage.setItem("userId",customerID);
+  window.sessionStorage.setItem("userId",customerID);// kamal-new-change
+  //window.sessionStorage.setItem("customer_name",customer_name);//kamal-change
   
     //setUsers(result.data);
   };
@@ -79,9 +82,6 @@ const Dashboard = () => {
           <div className="sidebar">
             {/* <div className="logo">My Sidebar</div> */}
             <ul className="sidebar-menu">
-              <li>
-              <Link to="/login">Home</Link>
-              </li>
               <li>
               <Link to="/create-account">Create Account</Link>
               </li>
@@ -100,16 +100,19 @@ const Dashboard = () => {
               <li>
               <WithdrawPage />
               </li>
+              <li>
+              <Link to="/login">Log Out</Link>
+              </li>
             </ul>
           </div>
         </nav>
         <main className="content">
           <div className="account-summary">
             <h1>User Details</h1>
-            <table>
+            <table className='User-details-table'>
             <thead>
               <tr>
-                <th>customerID</th>
+                <th>ID</th>
                 <th>Username</th>
                 {/* <th>Password</th> */}
                 <th>Email</th>
@@ -117,13 +120,14 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody>
-                <tr>
-                  <td>{customerID}</td>
-                  <td>{customer_name}</td>
-                  {/* <td>{user.password}</td> */}
-                  <td>{email}</td>
-                  <td>{contact}</td>
-                </tr>
+                  {userdetails.map((userdetails) => (
+                    <tr>
+                      <td>{userdetails.customer_id}</td>
+                      <td>{userdetails.customer_name}</td>
+                      <td>{userdetails.email}</td>
+                      <td>{userdetails.contact}</td>
+                    </tr>
+                  ))}
             </tbody>
           </table>
           </div>

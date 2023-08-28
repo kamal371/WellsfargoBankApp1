@@ -56,7 +56,8 @@ const Signup = () => {
           email,
           contact,
         };
-        const response = await axios.post('http://localhost:8080/admin/customer', data);
+        console.log(data);
+        const response = await axios.post('http://localhost:8080/customer/customers', data);
 
         if (response) {
           console.log('User registered successfully');
