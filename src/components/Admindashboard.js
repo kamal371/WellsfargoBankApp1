@@ -11,6 +11,7 @@ var tableData;
 
 function AdminDashboard() {
   const [user, setUsers] = useState([]);
+
   const navigate = useNavigate(); // Access the navigate function
 
   useEffect(() => {
@@ -25,10 +26,16 @@ function AdminDashboard() {
     // console.log("tableDta in loadUsers in admindashboard.js :",window.sessionStorage.getItem("admin_data"))
     setUsers(result.data);
   };
-  const handleDeleteClick = (index) => {
+  
+  const handleDeleteClick = async(index) => {
     console.log(`Edit clicked for row ${index}`);
     // Implement your edit logic here
-
+    const customer_data={
+      customer_id:user[index].customer_id
+    };
+    console.log("user.customer_id in admindashboard.js :",user[index].customer_id);
+    const update_customer_status = await axios.put("http://localhost:8080/admin/ActivateCustomer",customer_data);
+    console.log("update_customer_status in admindashboard.js :",update_customer_status);
   };
 
   const handleViewClick = async (index) => {
@@ -83,7 +90,7 @@ function AdminDashboard() {
               <td>
                 <div className="button-container">
                   <button onClick={() => handleViewClick(index)}>View/Edit</button>
-                  <button onClick={() => handleDeleteClick(index)}>Delete</button>
+                  <button onClick={() => handleDeleteClick(index)}>Change customer status</button>
                 </div>
               </td>
             </tr>

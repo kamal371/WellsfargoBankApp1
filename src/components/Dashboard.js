@@ -5,14 +5,14 @@ import axios from "axios";
 import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
 import CreateAccount from './CreateAccount';
 import AccountSummary from './AccountSummary';
-import TransactionPage from './TransactionPage';
+import TransactionPage from './TransactionBeneficiaryPage';
 import TransactionHistory from './TransactionHistory';
 import CheckBalance from './check_balance';
 import WithdrawPage from './WithdrawPage';
 import AccountSelection from './AccountSelection';
 //import CreateAccount from './CreateAccount';
 import Login from './Login';
-import './TransactionPage.css';
+import './TransactionBeneficiaryPage.css';
 import './CreateAccount.css';
 import './AccountSummary.css';
 import './dashboard_navbar.css';
@@ -90,6 +90,9 @@ const Dashboard = () => {
               </li>
               <li>
               <Link to="/transaction-page">Internet Banking</Link>
+              </li>
+              <li>
+              <Link to="/transaction-beneficiary-page">Internet Banking with beneficiary</Link>
               </li>
               <li>
               <Link to="/transaction-history">Transaction History</Link>

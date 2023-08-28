@@ -1,25 +1,70 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Typography, Container, CssBaseline } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { styled } from '@mui/system';
+import {
+  TextField,
+  Button,
+  Typography,
+  Container,
+  ThemeProvider,
+  createTheme,
+} from '@mui/material';
 import axios from 'axios';
-import Navbar from './Navbar';
-
-function Login({setUserName}) {
-  //sessionStorage.clear()
-  const [userName, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
-  const [emailError, setEmailError] = useState(null);
-  const [passwordError, setPasswordError] = useState(null);
-  const [loginError, setLoginError] = useState(null);
-
-  //sessionStorage.removeItem("userName");
-  
-  const navigate = useNavigate(); // Access the navigate function
+import styled from 'styled-components';
+import LockIcon from '@mui/icons-material/Lock';
+import BankImage from './bank-image.jpg'; // Replace with your bank's image
 
   
 
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#0047AB', // Professional blue color
+    },
+    error: {
+      main: '#f44336', // Red
+    },
+  },
+});
+
+const StyledContainer = styled(Container)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+`;
+
+const StyledForm = styled.form`
+  width: 100%;
+  margin-top: 1.5rem;
+`;
+
+const StyledTextField = styled(TextField)`
+  margin-bottom: 1rem;
+`;
+
+const StyledErrorMessage = styled(Typography)`
+  color: ${theme.palette.error.main};
+  margin-top: 0.5rem;
+`;
+
+const StyledButton = styled(Button)`
+  margin-top: 1rem;
+`;
+
+const StyledLockIcon = styled(LockIcon)`
+  font-size: 3rem;
+  color: ${theme.palette.primary.main};
+  margin-bottom: 1rem;
+`;
+
+const Login = ({ setUserName }) => {
+  const [userName, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [loginError, setLoginError] = useState('');
+
+  const navigate = useNavigate();
 
   const validateEmail = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -51,50 +96,24 @@ function Login({setUserName}) {
     validatePassword();
 
     if (emailError === '' && passwordError === '') {
-      //sessionStorage.clear();
-        try {
-           // const response = await axios.get(`http://localhost:8000/users?email=${email}&password=${password}`);
-           const UserData={
-            userName,
-            password
-           };
-           console.log(JSON.stringify(UserData))
-           const response = await axios.post('http://localhost:8080/authenticate',UserData);
-           console.log(response);
-           window.sessionStorage.setItem("token", JSON.stringify(response.data));
-           window.sessionStorage.setItem("userName", userName)
-           console.log(userName);
-           console.log(JSON.stringify(response.data))
-           //const user = response.data.find((user) => user.email === email && user.password === password);
-            // if (response.data.length > 0) {
-              // User found
-            if(response.data)
-            {
-              console.log('Login successful');
-              
-              //setUserName(user.name); // Set user's name in state or context
-              
-              navigate('/dashboard');
-            } else {
-              // User not found
-              setLoginError('Invalid email or password');
-              console.log('Invalid credentials');
-            }
-            
-            // const response1 = await axios.post('http://localhost:8080/customer/getaccount',
-            // JSON.parse(JSON.stringify(response.data)));
-            // console.log("below is response1")
-            // console.log(response1.data)
-            // if(response1.data){
-            //   navigate('/dashboard');
-            // } else {
-            //   navigate('/create-account');
-            // }
-          } catch (error) {
-            setLoginError('An error occurred');
-            console.error('Error:', error);
-            
-          }
+      try {
+        const UserData = {
+          userName,
+          password,
+        };
+        const response = await axios.post('http://localhost:8080/authenticate', UserData);
+
+        if (response.data) {
+          window.sessionStorage.setItem('token', JSON.stringify(response.data));
+          window.sessionStorage.setItem('userName', userName);
+          navigate('/dashboard');
+        } else {
+          setLoginError('Invalid email or password');
+        }
+      } catch (error) {
+        setLoginError('An error occurred');
+        console.error('Error:', error);
+      }
     }
   };
 
@@ -105,56 +124,45 @@ function Login({setUserName}) {
   }, [userName, password]);
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <FormContainer>
-        <LockOutlinedIcon style={{ color: '#e53935' }} />
-        <RedTypography component="h1" variant="h5">
-          Login
-        </RedTypography>
-        <form onSubmit={handleSubmit}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+    <ThemeProvider theme={theme}>
+      <StyledContainer maxWidth="xs">
+        <StyledLockIcon />
+        <Typography variant="h4" gutterBottom>
+          Secure Login
+        </Typography>
+        <StyledForm onSubmit={handleSubmit}>
+          <StyledTextField
+            label="Email"
+            type="email"
             value={userName}
             onChange={(e) => setEmail(e.target.value)}
             onBlur={validateEmail}
-            autoFocus
-          />
-          {emailError && <span className="error-message">{emailError}</span>}
-          <TextField
             variant="outlined"
-            margin="normal"
-            required
             fullWidth
-            name="password"
+            required
+            error={!!emailError}
+            helperText={emailError}
+          />
+          <StyledTextField
             label="Password"
             type="password"
-            id="password"
-            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             onBlur={validatePassword}
-          />
-          {passwordError && <span className="error-message">{passwordError}</span>}
-          {loginError && <span className="error-message">{loginError}</span>}
-          <RedSubmitButton
-            type="submit"
+            variant="outlined"
             fullWidth
-            variant="contained"
-          >
+            required
+            error={!!passwordError}
+            helperText={passwordError}
+          />
+          {loginError && <StyledErrorMessage>{loginError}</StyledErrorMessage>}
+          <StyledButton type="submit" variant="contained" color="primary" fullWidth>
             Login
-          </RedSubmitButton>
-        </form>
-      </FormContainer>
-    </Container>
+          </StyledButton>
+        </StyledForm>
+      </StyledContainer>
+    </ThemeProvider>
   );
-}
+};
 
 export default Login;

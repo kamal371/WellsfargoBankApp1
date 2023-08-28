@@ -12,6 +12,8 @@ const AdminView = () =>{
     const [accountBalance, setAccountBalance] = useState("");
     const [customerId,setCustomerId]=useState("");
 
+    const [transactions, setTransactions] = useState([]);
+
     const [accountType, setAccountType] = useState("");
     const [accountStatus, setAccountStatus] = useState("");
     const [userName,setUserName]=useState("");
@@ -49,6 +51,8 @@ const AdminView = () =>{
     useEffect(() => {
         fetchAccountOptions();
       }, []);
+
+
       const handleClick = async() => {
        // Update state to indicate button was clicked and set the value to display
        setIsButtonClicked(true);
@@ -77,6 +81,8 @@ const AdminView = () =>{
          setAccountNumber(resulta.data.account_id);
          setAccountStatus(resulta.data.activity);
          setAccountType(resulta.data.accountType);
+
+         setSelectedAccount(stored_account_id);
 
          setIsEmail(result_customer.data.email);
          console.log("Customer email is in adminview.js ",result_customer.data.email);
@@ -124,6 +130,16 @@ const AdminView = () =>{
        //window.sessionStorage.setItem("resp_account_balance",accountOptions[index].balance);
        //console.log("account_id :",window.sessionStorage.getItem("customer_balance"));
      };
+
+     useEffect(() => {
+      console.log("selectedAccount in useEffect in adminview.js :",selectedAccount);
+      if (selectedAccount !== '') {
+        fetchTransactions(selectedAccount);
+      }
+    }, [selectedAccount]);
+
+    console.log("selectedAccount in adminview.js :",selectedAccount);
+
      const fetchAccountOptions = async () => {
        try {
          var userId=window.sessionStorage.getItem("admin_customer_id");
@@ -153,7 +169,18 @@ const AdminView = () =>{
       navigate('/admindashboard');
     };
 
-    // search bar implementation
+   
+  const fetchTransactions = async (accountId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/customer/transaction/` + accountId
+      );
+      console.log('transactions', response.data);
+      setTransactions(response.data);
+    } catch (error) {
+      console.error('Error fetching transactions:', error);
+    }
+  };
 
   
     return (
@@ -240,6 +267,35 @@ const AdminView = () =>{
           </tr>
         </table>
     </div>
+
+
+    <div className="transaction-tables">
+        <div className="transaction-table">
+          <h2>All Transactions</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Transaction Time</th>
+                <th>From Account</th>
+                <th>To Account</th>
+                <th>Transaction Type</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {transactions.map((transaction) => (
+                <tr key={transaction.transaction_id}>
+                  <td>{transaction.transaction_time}</td>
+                  <td>{transaction.from_account}</td>
+                  <td>{transaction.to_account}</td>
+                  <td>{transaction.tType}</td>
+                  <td>{transaction.amount}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     
         </div>
     );
