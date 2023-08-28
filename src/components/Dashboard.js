@@ -5,14 +5,14 @@ import axios from "axios";
 import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
 import CreateAccount from './CreateAccount';
 import AccountSummary from './AccountSummary';
-import TransactionPage from './TransactionPage';
+import TransactionPage from './TransactionBeneficiaryPage';
 import TransactionHistory from './TransactionHistory';
 import CheckBalance from './check_balance';
 import WithdrawPage from './WithdrawPage';
 import AccountSelection from './AccountSelection';
 //import CreateAccount from './CreateAccount';
 import Login from './Login';
-import './TransactionPage.css';
+import './TransactionBeneficiaryPage.css';
 import './CreateAccount.css';
 import './AccountSummary.css';
 import './dashboard_navbar.css';
@@ -23,8 +23,10 @@ import './Login.css';
 import dashboard_navbar from './dashboard_navbar';
 //import TransferMoney from './TransferMoney';
 //var dat = window.sessionStorage.getItem("userCredentials");
-var userName = window.sessionStorage.getItem("userName");
-var token = window.sessionStorage.getItem("token");
+
+// var userName = window.sessionStorage.getItem("userName"); kamal-latest-change
+// var token = window.sessionStorage.getItem("token"); kamal-laetst-change
+
 //  var data = JSON.parse(dat);
 var customerID=null,customer_name=null,email=null,contact=null;
 // var customerID= "Dummy"//data["customer_id"];
@@ -62,9 +64,9 @@ const Dashboard = () => {
   customer_name = result.data.customer_name;
   email = result.data.email;
   contact = result.data.contact;
-  window.sessionStorage.setItem("userId",customerID);
-  console.log("userdetails are: ");
-  console.log(userdetails[0]);
+  window.sessionStorage.setItem("userId",customerID);// kamal-new-change
+  //window.sessionStorage.setItem("customer_name",customer_name);//kamal-change
+  
     //setUsers(result.data);
   };
 
@@ -81,9 +83,6 @@ const Dashboard = () => {
             {/* <div className="logo">My Sidebar</div> */}
             <ul className="sidebar-menu">
               <li>
-              <Link to="/login">Home</Link>
-              </li>
-              <li>
               <Link to="/create-account">Create Account</Link>
               </li>
               <li>
@@ -93,10 +92,16 @@ const Dashboard = () => {
               <Link to="/transaction-page">Internet Banking</Link>
               </li>
               <li>
+              <Link to="/transaction-beneficiary-page">Internet Banking with beneficiary</Link>
+              </li>
+              <li>
               <Link to="/transaction-history">Transaction History</Link>
               </li>
               <li>
               <WithdrawPage />
+              </li>
+              <li>
+              <Link to="/login">Log Out</Link>
               </li>
             </ul>
           </div>
