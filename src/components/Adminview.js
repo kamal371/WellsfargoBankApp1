@@ -4,6 +4,7 @@ import axios from "axios";
 import './Adminview.css';
 import './SmallButton.css';
 import { useNavigate } from 'react-router-dom';
+import Navbar from "./Navbar";
 var index,username_loaded_only_once,stored_account_id;
 const AdminView = () =>{
   const navigate = useNavigate(); // Access the navigate function

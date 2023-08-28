@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios"; 
+import Navbar from "./Navbar";
 var balance,index;
 const AccountSelection = () => {
   const [selectedAccount, setSelectedAccount] = useState(''); // Selected account state

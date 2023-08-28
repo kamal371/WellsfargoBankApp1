@@ -11,10 +11,15 @@ import {
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import axios from 'axios';
+import { Navigate, useNavigate } from 'react-router-dom';
+import Navbar from "./Navbar";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const theme = createTheme();
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [customer_name, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -37,10 +42,21 @@ const Signup = () => {
     }
   };
 
+  const validatePhone = () => {
+    if (contact<1000) {
+      setErrors({ ...errors, phone: 'Phone no must be atleast 4 digits ' });
+    }else if(contact>9999){
+      setErrors({ ...errors, phone: 'Phone no must be atleast 4 digits ' });
+    } else {
+      setErrors({ ...errors, password: '' });
+    }
+  };
+
   const validateForm = () => {
     const validationErrors = {};
     validateEmail();
     validatePassword();
+    validatePhone();
     return validationErrors;
   };
 
@@ -57,17 +73,23 @@ const Signup = () => {
           contact,
         };
         console.log(data);
-        const response = await axios.post('http://localhost:8080/customer/customers', data);
+        const response = await axios.post('http://localhost:8080/customer/customers', data).catch(function (error) {
+          if (error.response) {
+            toast(error.response.data.message);
+          }
+        });
 
         if (response) {
           console.log('User registered successfully');
           window.alert('Successfully Registered');
+          navigate("/login");
         } else {
           console.error('Error registering user');
-          window.alert('Failed to register');
+          toast("Failed to register");
         }
       } catch (error) {
         console.error('Error:', error);
+        toast(error);
       }
     } else {
       setErrors(validationErrors);
@@ -76,6 +98,7 @@ const Signup = () => {
 
   return (
     <ThemeProvider theme={theme}>
+      <ToastContainer></ToastContainer>
       <Container component="main" maxWidth="xs">
         <Paper elevation={3} className="signup-container">
           <Avatar className="avatar">

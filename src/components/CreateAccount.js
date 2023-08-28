@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './CreateAccount.css';
+import Navbar from "./Navbar";
 
 var username;
 var activity,account_id,customer_id;
@@ -77,7 +78,6 @@ function CreateAccount({ username }) {
 
   return (
     <div className="create-account-container">
-      
       <h2>Create New Account</h2>
       <form onSubmit={handleSubmit}>
       <div className="input-group">

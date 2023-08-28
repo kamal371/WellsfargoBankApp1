@@ -155,6 +155,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './TransactionHistory.css';
+import Navbar from "./Navbar";
 
 const TransactionHistory = () => {
   const [selectedAccountId, setSelectedAccountId] = useState('');
@@ -196,6 +197,24 @@ const TransactionHistory = () => {
       console.error('Error fetching transactions:', error);
     }
   };
+
+
+  const [balanceMessage,setBalanceMessage] = useState("please select an account");
+  const [visible,setVisible] = useState(false);
+
+  const handleAccountSelect = async (accountId) => {
+
+    setSelectedAccountId(accountId);
+    const result = await  axios.get("http://localhost:8080/account/read/"+accountId)
+    console.log("balance is: Rs."+result.data.balance);
+    console.log("Account id is: ",accountId);
+    if(accountId){
+      setBalanceMessage("Current Balance: Rs."+result.data.balance);
+      setVisible(true);
+    }
+  };
+
+
 
   return (
     <div className="transaction-history">
