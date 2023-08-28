@@ -155,6 +155,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './TransactionHistory.css';
+import Navbar from "./Navbar";
 
 const TransactionHistory = () => {
   const [selectedAccountId, setSelectedAccountId] = useState('');
