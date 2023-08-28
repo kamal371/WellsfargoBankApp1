@@ -28,6 +28,7 @@ import AccountSelection from './components/AccountSelection'
 import AdminView from './components/Adminview.js';
 import AddBeneficiaryPage from './components/AddBeneficiaryPage';
 import Protected from './components/Protected';
+import HomePage from './components/HomePage';
 
 function App() {
 
@@ -37,10 +38,7 @@ function App() {
       path: "/login",
       element: <><Navbar/><Login/></>
     },
-    {
-      path: "/",
-      element: <Navbar/>
-    },
+    
     {
       path: "/dashboard",
       element: <><Navbar/><Protected Component = {Dashboard}/></>
@@ -92,6 +90,10 @@ function App() {
     {
       path: "/add-beneficiary",
       element: <><Navbar/><Protected Component = {AddBeneficiaryPage}/></>
+    },
+    {
+      path :"/",
+      element:<><Navbar/><Protected Component= {HomePage}/></>
     }
   ]);
   
