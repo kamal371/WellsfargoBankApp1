@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import './Adminlogin.css'; // Assuming you have your CSS file for AdminLogin styling
+import Navbar from "./Navbar";
 
 const theme = createTheme({
   palette: {

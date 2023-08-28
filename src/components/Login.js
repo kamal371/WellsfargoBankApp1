@@ -12,6 +12,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import LockIcon from '@mui/icons-material/Lock';
 import BankImage from './bank-image.jpg'; // Replace with your bank's image
+import Navbar from "./Navbar";
 
   
 

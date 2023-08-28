@@ -197,9 +197,7 @@ const TransactionHistory = () => {
       console.error('Error fetching transactions:', error);
     }
   };
-  var debits = transactions.debits;
-  var credits = transactions.credits;
-  var withdrawals = transactions.withdrawals;
+
 
   const [balanceMessage,setBalanceMessage] = useState("please select an account");
   const [visible,setVisible] = useState(false);
@@ -225,7 +223,7 @@ const TransactionHistory = () => {
         <label>Select Account:</label>
         <select
           value={selectedAccountId}
-          onChange={(e) => setSelectedAccountId(e.target.value)}
+          onChange={(e) => handleAccountSelect(e.target.value)}
         >
           <option value="">Select an account</option>
           {accountOptions.map((accountId) => (

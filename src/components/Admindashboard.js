@@ -5,6 +5,7 @@ import './TableWithButtons.css';
 import AdminView from './Adminview.js';
 import { useNavigate } from 'react-router-dom';
 import TableWithSearch from './TableWithSearch';
+import Navbar from "./Navbar";
 
 var index;
 var tableData;

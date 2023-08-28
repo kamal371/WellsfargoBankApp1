@@ -1,5 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import axios from "axios";
+import Navbar from "./Navbar";
 
 var resp_account_balance,account_id;
 var       transaction_time,from_account,to_account,transaction_id,tType;

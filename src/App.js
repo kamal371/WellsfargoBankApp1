@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link} from 'react-router-dom';
+import { RouterProvider, createBrowserRouter} from 'react-router-dom';
 import './App.css';
 import Login from './components/Login.js';
 import './components/Login.css';
@@ -26,56 +26,84 @@ import WithdrawPage from './components/WithdrawPage';
 import AccountSelection from './components/AccountSelection'
 import AdminView from './components/Adminview.js';
 import AddBeneficiaryPage from './components/AddBeneficiaryPage';
+import Protected from './components/Protected';
 
 function App() {
 
   const [userName, setUserName] = useState('');
+  const router = createBrowserRouter([
+    {
+      path: "/login",
+      element: <><Navbar/><Login/></>
+    },
+    {
+      path: "/",
+      element: <Navbar/>
+    },
+    {
+      path: "/dashboard",
+      element: <><Navbar/><Protected Component = {Dashboard}/></>
+    },
+    {
+      path: "/signup",
+      element: <><Navbar/><Protected Component = {Signup}/></>
+    },
+    {
+      path: "/admin",
+      element: <><Navbar/><AdminLogin/></>
+    },
+    {
+      path: "/admindashboard",
+      element: <><Navbar/><Protected Component = {AdminDashboard}/></>
+    },
+    {
+      path: "/create-account",
+      element: <><Navbar/><Protected Component = {CreateAccount}/></>
+    },
+    {
+      path: "/transaction-page",
+      element: <><Navbar/><Protected Component = {TransactionPage}/></>
+    },
+    {
+      path: "/transaction-beneficiary-page",
+      element: <><Navbar/><Protected Component = {TransactionBeneficiaryPage}/></>
+    },
+    {
+      path: "/account-summary",
+      element: <><Navbar/><Protected Component = {AccountSummary}/></>
+    },
+    {
+      path: "/transaction-history",
+      element: <><Navbar/><Protected Component = {TransactionHistory}/></>
+    },
+    {
+      path: "/withdraw-page",
+      element: <><Navbar/><Protected Component = {WithdrawPage}/></>
+    },
+    {
+      path: "/account-selection",
+      element: <><Navbar/><Protected Component = {AccountSelection}/></>
+    },
+    {
+      path: "/admin-view",
+      element: <><Navbar/><Protected Component = {AdminView}/></>
+    },
+    {
+      path: "/add-beneficiary",
+      element: <><Navbar/><Protected Component = {AddBeneficiaryPage}/></>
+    }
+  ]);
   
-  const transactions = [
-    {
-      date: '2023-08-20',
-      description: 'Groceries',
-      amount: '-$50.00',
-    },
-    {
-      date: '2023-08-19',
-      description: 'Salary',
-      amount: '$1000.00',
-    },
-    // Add more transactions here
-  ];
+  
   
   return (
    
       <div className="App">
 
-        <Navbar/>
-       
-          {/* <nav className="navbar">
-            <ul className="nav-list">
-              <li className="nav-item"><Link to="/login">Login</Link></li>
-              <li className="nav-item"><Link to="/signup">Signup</Link></li>
-              <li className="nav-item"><Link to="/admin">Admin</Link></li>
-            </ul>
-          </nav> */}
-          
 
-        <Routes>
-          <Route path="/login" element={<Login setUserName={setUserName}/>} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/admindashboard" element={<AdminDashboard />} />
-          <Route path="/create-account" element={<CreateAccount/>}/>
-          <Route path="/transaction-page" element={<TransactionPage />} />
-          <Route path="/transaction-beneficiary-page" element={<TransactionBeneficiaryPage />} />
-          <Route path="/account-summary" element={<AccountSummary />} />
-          <Route path="/transaction-history" element={<TransactionHistory />} />
-          <Route path="/withdraw-page" element={<WithdrawPage />} />
-          <Route path="/account-selection" element={<AccountSelection />} />
-          <Route path="/admin-view" element={<AdminView />} />
-          <Route path="/add-beneficiary" element={<AddBeneficiaryPage />} />
-        </Routes>
+        <RouterProvider router={router}/>
+
+          
       </div>
     
   );

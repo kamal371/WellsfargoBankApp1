@@ -11,10 +11,13 @@ import {
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import axios from 'axios';
+import { Navigate, useNavigate } from 'react-router-dom';
+import Navbar from "./Navbar";
 
 const theme = createTheme();
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [customer_name, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -62,6 +65,7 @@ const Signup = () => {
         if (response) {
           console.log('User registered successfully');
           window.alert('Successfully Registered');
+          navigate("/login");
         } else {
           console.error('Error registering user');
           window.alert('Failed to register');

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './AccountSummary.css'
+import Navbar from "./Navbar";
 var balance,index;
 // Define the AccountSummary component
 const AccountSummary =  () => {

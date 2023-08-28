@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Navbar from "./Navbar";
 
 const ButtonComponent = () => {
   // State to track whether the button was clicked and the value to display
