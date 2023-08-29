@@ -1,7 +1,8 @@
 import React, { useState,useEffect } from 'react';
 import axios from "axios";
 import Navbar from "./Navbar";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 var resp_account_balance,account_id;
 var       transaction_time,from_account,to_account,transaction_id,tType;
 
@@ -42,7 +43,7 @@ const WithdrawPage = () => {
 
     resp_account_balance=window.sessionStorage.getItem("resp_account_balance");
     console.log("accoutn balance in withdwa.js page :",resp_account_balance);
-    transaction_time="2023-08-21T00:00:00";
+   // transaction_time="2023-08-21T00:00:00";
     transaction_id=0;
     tType=3;
 
@@ -73,19 +74,22 @@ const WithdrawPage = () => {
       setWithdrawAmount(0); // Reset withdrawal amount after successful withdrawal
       if (response.data) {
         console.log('Withdrawal successfully');
+        toast("Withdraw successful")
         // Optionally, you can show a success message to the user
       }
       else{
-        console.log('withdrawal not done');
+        console.log('Withdrawal not done');
+        toast("Withdraw not done");
       }
 
     } else {
-      alert('Invalid withdrawal amount or insufficient balance.');
+      toast('Invalid withdrawal amount or insufficient balance.');
     }
   };
 
   return (
     <div>
+      <ToastContainer></ToastContainer>
       <h2>Withdraw </h2>
       <p>Enter amount to withdraw {balance}</p>
       <input

@@ -10,8 +10,7 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import HistoryIcon from '@mui/icons-material/History';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { styled } from '@mui/material/styles';
-import WithdrawPage from './WithdrawPage.js';
-
+import WithdrawPage from './WithdrawPage';
 const drawerWidth = 240;
 
 const CustomDrawer = styled(Drawer)(({ theme }) => ({

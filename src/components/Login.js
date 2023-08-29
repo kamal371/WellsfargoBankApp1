@@ -101,7 +101,11 @@ const Login = ({ setUserName }) => {
           userName,
           password,
         };
-        const response = await axios.post('http://localhost:8080/authenticate', UserData);
+        const response = await axios.post('http://localhost:8080/authenticate', UserData).catch(function (error) {
+          if (error.response) {
+            toast(error.response.data.message);
+          }
+        });
         console.log(response)
         if (response.data) {
           window.sessionStorage.setItem('token', JSON.stringify(response.data));
@@ -110,15 +114,14 @@ const Login = ({ setUserName }) => {
         } else {
           setLoginError('Invalid email or password');
           toast(""+response.error, {
-            position: 'bottom-center',
             autoClose: 3000,
           });
         }
       } catch (error) {
         setLoginError('An error occurred');
-        toast(""+error, {
-          position: toast.POSITION.BOTTOM_CENTER
-        });
+        // toast(""+error, {
+        //   autoClose : 3000,
+        // });
        
         console.error('Error:', error);
       }

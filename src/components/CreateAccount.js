@@ -3,7 +3,8 @@ import axios from 'axios';
 import './CreateAccount.css';
 import Navbar from "./Navbar";
 import SideNavbar from './SideNavbar';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 var username;
 var activity,account_id,customer_id;
 
@@ -61,17 +62,24 @@ function CreateAccount({ username }) {
       console.log("accountData with stringify :",JSON.stringify(accountData));
       console.log("accountData without stringify :",accountData);
       //console.log(JSON.stringify(accountData));
-      const response = await axios.post('http://localhost:8080/account/add', accountData);
+      const response = await axios.post('http://localhost:8080/account/add', accountData).catch(function (error) {
+        if (error.response) {
+          toast(error.response.data.message);
+        }
+      });
       console.log("response.data in createaccount.js :",response.data);
       if (response.data) {
         console.log('Account created successfully');
+        toast("Account created successfully");
         // Optionally, you can show a success message to the user
       }
       else{
         console.log('Account not created');
+        toast("Failed to create account");
       }
     } catch (error) {
       console.error('Error creating account:', error);
+      
       // Handle error and show error message to the user
     }
   }

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from "./Navbar";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const TransactionPage = () => {
   const [fromAccountOptions, setFromAccountOptions] = useState([]);
   const [from_account, setFromAccountId] = useState('');
@@ -46,10 +47,30 @@ const TransactionPage = () => {
       };
 
       // Make a POST request to the backend API for transaction submission
-      const response = await axios.post('http://localhost:8080/customer/transaction', transactionData); // Replace with actual endpoint
+      if(amount>50000)
+      {
+        toast("Amount is more than 50000. Please add as beneficiary to transfer");
+      }
+      else
+      {
+      const response = await axios.post('http://localhost:8080/customer/transaction', transactionData).catch(function (error) {
+        if (error.response) {
+          toast(error.response.data.message);
+        }
+      });; // Replace with actual endpoint
 
       // Handle the response from the backend (e.g., show success message)
+      if(response)
+      {
+        toast("Transaction Successful");
+      }
+      else
+      {
+        toast("Transaction failed");
+      }
       console.log('Transaction submitted:', response.data);
+    }
+    
     } catch (error) {
       console.error('Error submitting transaction:', error);
       // Handle the error (e.g., show error message)
@@ -58,6 +79,7 @@ const TransactionPage = () => {
 
   return (
     <div>
+      <ToastContainer></ToastContainer>
       <h1>Transaction Page</h1>
       <form onSubmit={handleSubmit}>
         {/* From Account */}
