@@ -38,6 +38,7 @@ function AdminLogin() {
       //console.log("before admin dashboard");
       navigate('/admindashboard');
       console.log("into admin dashboard");
+      window.sessionStorage.setItem("userName",username);
     } else {
       setLoginError('Invalid username or password');
     }
